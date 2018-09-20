@@ -4,16 +4,42 @@
 
 using namespace std;
 
-int girar_roleta(int ){
-    cout << "ok" << endl;
+struct Jogador{
+    string nome;
+    int pontuacao;
+
+};
+
+int girar_roleta(){
+
+    return rand()%12;
 }
+
+// void rodada(Jogador &j, int &pontuacao){
+//     int resultado_roleta;
+//     char letra;
+//     cout << j.nome << ", pressione alguma ENTER para girar a roleta" << endl;
+//     getchar();  
+//     resultado_roleta = girar_roleta();
+//         if(resultado_roleta == 10){
+//             cout << "Passou a vez" << endl;
+//         }
+//         else if(resultado_roleta == 11){
+//             pontuacao_rodada_j1 = 0;
+//             cout << "Perdeu tudo" << endl;
+//         }else{
+//             cout << "Valendo " << roleta[resultado_roleta] << " pontos, digite uma letra:" << endl;
+//             cin >> letra;
+//             getchar();
+//         }
+// }
 
 int main()
 {
     int entrada;
     int pontuacao1 = 0;
     int pontuacao2 = 0;
-    string jogador1, jogador2;
+    string roleta[12] = {"100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "Passou a vez", "Perdeu tudo"}; 
     
     //int jogadores[3];
     //cout << sizeof(jogadores)/sizeof(int) << endl;
@@ -24,14 +50,25 @@ int main()
     //cout << "TRES JOGADORES DIGITE 3" << endl;
     cin >> entrada;
 
+    Jogador jogador1;
+    Jogador jogador2;
     switch(entrada){
         case 1:
-            cin >> jogador1;
-            jogador2 = "IA";
+            cout << "Digite seu nome: " << endl;
+            cin >> jogador1.nome ;
+            getchar();
+            jogador1.pontuacao = 0;
+            jogador2.nome = "IA";
+            jogador2.pontuacao = 0;
             break;
         case 2:
-            cin >> jogador1;
-            cin >> jogador2;
+            cout << "Digite seu nome: " << endl;
+            cin >> jogador1.nome ;
+            jogador1.pontuacao = 0;
+            cout << "Digite seu nome: " << endl;
+            cin >> jogador2.nome ;
+            getchar();
+            jogador2.pontuacao = 0;
             break;
         case 0:
             break;
@@ -41,20 +78,45 @@ int main()
         
     }
     int vez = 0;
-    while(pontuacao1 != 10000 || pontuacao2 != 10000){
+    int pontuacao_rodada_j1 = 0;
+    int pontuacao_rodada_j2 = 0;
+    char letra;
+    int resultado_roleta;
+    while(jogador1.pontuacao != 10000 || jogador2.pontuacao != 10000){
         if(vez == 0){
-            string acao = "347d72b"; 
-            while(acao == "347d72b"){
-                cout << "Jogador 1, pressione alguma letra para girar a roleta" << endl;
-                cin >> acao;
-            }
+            cout << jogador1.nome << ", pressione alguma ENTER para girar a roleta" << endl;
+            getchar();  
+            resultado_roleta = girar_roleta();
             vez = 1;
-            girar_roleta(pontuacao1);
-
+            if(resultado_roleta == 10){
+                 cout << "Passou a vez" << endl;
+             }
+            else if(resultado_roleta == 11){
+                pontuacao_rodada_j1 = 0;
+                cout << "Perdeu tudo" << endl;
+            }else{
+                cout << "Valendo " << roleta[resultado_roleta] << " pontos, digite uma letra:" << endl;
+                cin >> letra;
+                getchar();
+            }
         }
         else{
-            cout << "ferrou" << endl;
+            cout << jogador2.nome << ", pressione alguma ENTER para girar a roleta" << endl;
+            getchar();  
+            resultado_roleta = girar_roleta();
             vez = 0;
+            if(resultado_roleta == 10){
+                 cout << "Passou a vez" << endl;
+             }
+            else if(resultado_roleta == 11){
+                pontuacao_rodada_j1 = 0;
+                cout << "Perdeu tudo" << endl;
+            }else{
+                cout << "Valendo " << roleta[resultado_roleta] << " pontos, digite uma letra:" << endl;
+                cin >> letra;
+                getchar();
+            }
+            
         }
 
 
