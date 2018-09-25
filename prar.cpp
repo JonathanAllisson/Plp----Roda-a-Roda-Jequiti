@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
@@ -7,11 +6,12 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 #include <string>
 #include <unistd.h>
 #include <stdio.h>
+
 using namespace std;
+
 string comeco;
 string sair;
 int opcao;
@@ -20,6 +20,7 @@ int pontuacao1 = 0;
 int pontuacao2 = 0;
 int pontuacao3 = 0;
 string roleta[12] = {"100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "Passou a vez", "Perdeu tudo"};
+
 void telaInicial();
 void iniciar();
 void limparTela();
@@ -31,22 +32,23 @@ void tresJogadores();
 void regras();
 void rodada();
 void jogo();
-
 void sleepcp(int milliseconds);
+
 struct Jogador{
     string nome;
     int pontuacao;
-
 };
+
 Jogador jogadores[3];
-void sleepcp(int milliseconds) // Cross-platform sleep function
-{
+
+void sleepcp(int milliseconds) {// Cross-platform sleep function
     #ifdef WIN32
         Sleep(milliseconds);
     #else
     -    usleep(milliseconds * 1000);
     #endif // win32
 }
+
 void limparTela() {
 	#ifdef WINDOWS
 		std::system("cls");
@@ -56,9 +58,9 @@ void limparTela() {
 }
 
 int girar_roleta(){
-
     return rand()% (11-0) + 0;
 }
+
 void jogada(Jogador j, string roleta[], int & p_rodada){
 	char letra;
     int r_roleta;
@@ -79,6 +81,7 @@ void jogada(Jogador j, string roleta[], int & p_rodada){
         getchar();
     }
 }
+
 void rodada_do_but(Jogador j, string roleta[], int & p_rodada){
     int r_roleta;
     cout << "Vez da "<< j.nome << " girar a roleta" << endl;
@@ -86,6 +89,7 @@ void rodada_do_but(Jogador j, string roleta[], int & p_rodada){
     sleepcp(3000);
     cout << "Valendo " << roleta[r_roleta] << " pontos" << endl;
 }
+
 void rodada(Jogador & j, string roleta[], int & p_rodada){
     if(j.nome == "IA"){
 		rodada_do_but(j, roleta, p_rodada);
@@ -96,6 +100,7 @@ void rodada(Jogador & j, string roleta[], int & p_rodada){
 		jogada(j, roleta, p_rodada);
 	}
 }
+
 void iniciar() {
 	limparTela();
     telaInicial();
@@ -145,10 +150,10 @@ void telaInicial() {
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
 	cout << "Carregando..." << endl;
-	sleepcp(2000);
-	
+	sleepcp(1000);	
 	limparTela();
 }
+
 void telaOpcoes(){
 	cout << "-----------------------------------------------------------------------" << endl;
     cout << "********************* RODA A RODA JEQUITI *****************************" << endl;
@@ -176,6 +181,7 @@ void comecar(){
     cout << "Qual a sua escolha? " << endl;
     cin >> entrada;
 }
+
 void umJogador(){
 	cout << "Digite seu nome: " << endl;
 	cin >> jogadores[0].nome ;
@@ -187,6 +193,7 @@ void umJogador(){
 	jogadores[2].pontuacao = 0;
 	limparTela();
 }
+
 void doisJogadores(){	
 	cout << "Jogador 1, digite seu nome: " << endl;
 	cin >> jogadores[0].nome ;
@@ -199,6 +206,7 @@ void doisJogadores(){
 	jogadores[2].pontuacao = 0;
 	limparTela();
 }
+
 void tresJogadores(){
 	cout << "Jogador 1, digite seu nome: " << endl;
 	cin >> jogadores[0].nome ;
@@ -212,6 +220,7 @@ void tresJogadores(){
 	jogadores[2].pontuacao = 0;
 	limparTela();
 }
+
 void regras(){
 	cout << "Roda-a-Roda é um game-show apresentado por Sílvio Santos." << endl;
 	cout << "O objetivo é acertar a palavra da pista que for sorteada. Durante seu turno, você fará duas ações:" << endl;
@@ -229,6 +238,7 @@ void regras(){
 	cin >> sair;
 	iniciar();
 }
+
 void jogo(){
 	int vez = 0;
     int pontuacao_rodada_j1 = 0;
@@ -248,9 +258,11 @@ void jogo(){
             vez = 0;
             
         }
+    }
 }
-}
+
 int main() {
+    srand((unsigned)time(NULL)) ;
     iniciar();
     jogo();
     return 0;
