@@ -16,9 +16,7 @@ string comeco;
 string sair;
 int opcao;
 int entrada;
-int pontuacao1 = 0;
-int pontuacao2 = 0;
-int pontuacao3 = 0;
+int n_rodada = 0;
 string roleta[12] = {"100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "Passou a vez", "Perdeu tudo"};
 
 void telaInicial();
@@ -41,6 +39,11 @@ struct Jogador{
     int pontuacao;
 };
 
+struct Palavra{
+    string palavra;
+    string palavra_coberta;
+};
+
 Jogador jogadores[3];
 void rodada(Jogador &j, int &p_rodada);
 void jodada_do_bot(Jogador j, int & p_rodada);
@@ -56,9 +59,9 @@ void sleepcp(int milliseconds) {// Cross-platform sleep function
 
 void limparTela() {
 	#ifdef WINDOWS
-		std::system("cls");
+		system("cls");
 	#else
-		std::system("clear");
+		system("clear");
 	#endif
 }
 
@@ -218,7 +221,7 @@ void jogo(){
     int pontuacao_rodada_j1 = 0;
     int pontuacao_rodada_j2 = 0;
     int pontuacao_rodada_j3 = 0;
-    while(jogadores[0].pontuacao != 10000 || jogadores[1].pontuacao != 10000){
+    while(n_rodada < 6){
         if(vez == 0){
             rodada(jogadores[0], pontuacao_rodada_j1);
             vez = 1;
@@ -234,8 +237,8 @@ void jogo(){
     }
 }
 
-int girar_roleta(){
-    return rand()% (11-0) + 0;
+int girar_roleta(int n_maximo){
+    return rand()% n_maximo;
 }
 
 void jogada(Jogador j, int & p_rodada) {
@@ -244,7 +247,7 @@ void jogada(Jogador j, int & p_rodada) {
     cout << j.nome << ", pressione ENTER para girar a roleta" << endl;
     scanf("%*c");
     scanf("%*c");
-    r_roleta = girar_roleta();
+    r_roleta = girar_roleta(11);
     cout << "Rodando..."<< endl;
     sleepcp(3000);
     if(r_roleta == 10){
