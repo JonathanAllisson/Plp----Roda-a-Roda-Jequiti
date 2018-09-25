@@ -30,9 +30,11 @@ void umJogador();
 void doisJogadores();
 void tresJogadores();
 void regras();
-void rodada();
 void jogo();
 void sleepcp(int milliseconds);
+void opcaoInvalida(bool escolha);
+void case1();
+void case2();
 
 struct Jogador{
     string nome;
@@ -40,6 +42,9 @@ struct Jogador{
 };
 
 Jogador jogadores[3];
+void rodada(Jogador &j, int &p_rodada);
+void jodada_do_bot(Jogador j, int & p_rodada);
+void jogada(Jogador j, int & p_rodada);
 
 void sleepcp(int milliseconds) {// Cross-platform sleep function
     #ifdef WIN32
@@ -57,91 +62,63 @@ void limparTela() {
 	#endif
 }
 
-int girar_roleta(){
-    return rand()% (11-0) + 0;
-}
-
-void jogada(Jogador j, string roleta[], int & p_rodada){
-	char letra;
-    int r_roleta;
-    cout << j.nome << ", pressione ENTER para girar a roleta" << endl;
-    getchar();  
-    r_roleta = girar_roleta();
-    cout << "Rodando..."<< endl;
+void opcaoInvalida(bool escolha) {
+    cout << "***********************************************************************" << endl;
+    cout << "--------------------------- OPCÃO INVÁLIDA ----------------------------" << endl;
+    cout << "***********************************************************************" << endl;
     sleepcp(2000);
-    if(r_roleta == 10){
-        cout << "Passou a vez" << endl;
-    }
-    else if(r_roleta == 11){
-        p_rodada = 0;
-        cout << "Perdeu tudo" << endl;
-    }else{
-        cout << "Valendo " << roleta[r_roleta] << " pontos, digite uma letra:" << endl;
-        cin >> letra;
-        getchar();
+    limparTela();
+    if(escolha) {
+        case1();
+    } else {
+        case2();
     }
 }
 
-void rodada_do_but(Jogador j, string roleta[], int & p_rodada){
-    int r_roleta;
-    cout << "Vez da "<< j.nome << " girar a roleta" << endl;
-    cout << "Rodando..."<< endl;
-    sleepcp(3000);
-    cout << "Valendo " << roleta[r_roleta] << " pontos" << endl;
+void case2() {
+    comecar();
+    limparTela();
+    switch(entrada){
+        case 1:
+            umJogador();
+            break;
+        case 2:
+            doisJogadores();
+            break;
+        case 3:
+            tresJogadores();
+            break;
+        default:
+            opcaoInvalida(false);
+    }
 }
 
-void rodada(Jogador & j, string roleta[], int & p_rodada){
-    if(j.nome == "IA"){
-		rodada_do_but(j, roleta, p_rodada);
-	}
-    else if(j.nome == "IA2"){
-		rodada_do_but(j, roleta, p_rodada);
-    }else{
-		jogada(j, roleta, p_rodada);
-	}
+void case1() {
+    telaOpcoes();
+    limparTela();
+    switch(opcao){
+        case 1:
+            case2();
+            break;
+        case 2:
+            cout << opcao << endl;
+			regras();
+            break;
+        case 3:
+            cout << "Ranking em construção" << endl;
+            break;
+        default:
+            opcaoInvalida(true);
+    }
 }
 
 void iniciar() {
 	limparTela();
     telaInicial();
-    telaOpcoes();
-    while ((opcao!=1) && (opcao!=2) && (opcao!=3)) {
-		cout << "Opcao invalida" << endl;
-		telaOpcoes();
-		limparTela();
-			}
-    switch(opcao){
-        case 1:
-            comecar();
-            limparTela();
-            while ((entrada!=1) && (entrada!=2) && (entrada!=3)) {
-				cout << "pcao invalida" << endl;
-				comecar();
-				limparTela();
-			}
-            switch(entrada){
-				case 1:
-					umJogador();
-					break;
-				case 2:
-					doisJogadores();
-					break;
-				case 3:
-					tresJogadores();
-					break;
-				}
-            break;
-        case 2:
-			regras();
-            break;
-        case 3:
-            cout << "aki estarao as melhores pontuacoes" << endl;
-            break;
-		}
+    case1();
 }
 
 void telaInicial() {
-
     cout << "-----------------------------------------------------------------------" << endl;
     cout << "***********************************************************************" << endl;
     cout << "----------------------------  RODA  -----------------------------------" << endl;
@@ -149,7 +126,7 @@ void telaInicial() {
     cout << "--------------------------  JEQUITI  ----------------------------------" << endl;
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
-	cout << "Carregando..." << endl;
+	cout << ">> Carregando..." << endl;
 	sleepcp(1000);	
 	limparTela();
 }
@@ -163,7 +140,7 @@ void telaOpcoes(){
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
     cout << "																		" << endl;
-	cout << "qual a sua escolha? " << endl;
+    cout << ">> Qual a sua escolha? " << endl;
 	cin >> opcao;
 	limparTela();
 }
@@ -178,45 +155,42 @@ void comecar(){
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
     cout << "																		" << endl;
-    cout << "Qual a sua escolha? " << endl;
+    cout << ">> Qual a sua escolha?" << endl;
     cin >> entrada;
 }
 
 void umJogador(){
-	cout << "Digite seu nome: " << endl;
+	cout << ">> Digite seu nome: " << endl;
 	cin >> jogadores[0].nome ;
-	getchar();
 	jogadores[0].pontuacao = 0;
-	jogadores[1].nome = "IA";
+	jogadores[1].nome = "Bot 01";
 	jogadores[1].pontuacao = 0;
-	jogadores[2].nome = "IA2";
+	jogadores[2].nome = "Bot 02";
 	jogadores[2].pontuacao = 0;
 	limparTela();
 }
 
 void doisJogadores(){	
-	cout << "Jogador 1, digite seu nome: " << endl;
+	cout << "Jogador 01, digite seu nome: " << endl;
 	cin >> jogadores[0].nome ;
 	jogadores[0].pontuacao = 0;
-	cout << "Jogador 2, digite seu nome: " << endl;
+	cout << "Jogador 02, digite seu nome: " << endl;
 	cin >> jogadores[1].nome ;
-	getchar();
 	jogadores[1].pontuacao = 0;
-	jogadores[2].nome = "IA";
+	jogadores[2].nome = "Bot 01";
 	jogadores[2].pontuacao = 0;
 	limparTela();
 }
 
 void tresJogadores(){
-	cout << "Jogador 1, digite seu nome: " << endl;
+	cout << "Jogador 01, digite seu nome: " << endl;
 	cin >> jogadores[0].nome ;
 	jogadores[0].pontuacao = 0;
-	cout << "Jogador 2, digite seu nome: " << endl;
+	cout << "Jogador 02, digite seu nome: " << endl;
 	cin >> jogadores[1].nome ;
 	jogadores[1].pontuacao = 0;
-	cout << "Jogador 3, digite seu nome: " << endl;
+	cout << "Jogador 03, digite seu nome: " << endl;
 	cin >> jogadores[2].nome ;
-	getchar();
 	jogadores[2].pontuacao = 0;
 	limparTela();
 }
@@ -246,19 +220,61 @@ void jogo(){
     int pontuacao_rodada_j3 = 0;
     while(jogadores[0].pontuacao != 10000 || jogadores[1].pontuacao != 10000){
         if(vez == 0){
-            rodada(jogadores[0], roleta, pontuacao_rodada_j1);
+            rodada(jogadores[0], pontuacao_rodada_j1);
             vez = 1;
         }
         else if(vez == 1){
-            rodada(jogadores[1], roleta, pontuacao_rodada_j2);
+            rodada(jogadores[1], pontuacao_rodada_j2);
             vez = 2;
         }
         else{
-            rodada(jogadores[2], roleta, pontuacao_rodada_j3);
+            rodada(jogadores[2], pontuacao_rodada_j3);
             vez = 0;
-            
         }
     }
+}
+
+int girar_roleta(){
+    return rand()% (11-0) + 0;
+}
+
+void jogada(Jogador j, int & p_rodada) {
+	char letra;
+    int r_roleta = 0;
+    cout << j.nome << ", pressione ENTER para girar a roleta" << endl; 
+    r_roleta = girar_roleta();
+    cout << "Rodando..."<< endl;
+    sleepcp(1000);
+    if(r_roleta == 10){
+        cout << "Passou a vez" << endl;
+    }
+    else if(r_roleta == 11){
+        p_rodada = 0;
+        cout << "Perdeu tudo" << endl;
+    }else{
+        cout << "Valendo " << roleta[r_roleta] << " pontos, digite uma letra:" << endl;
+        cin >> letra;
+    }
+}
+
+void jodada_do_bot(Jogador j, int & p_rodada) {
+    int r_roleta = 0;
+    cout << "Vez do(a) "<< j.nome << " girar a roleta" << endl;
+    cout << "Rodando..."<< endl;
+    sleepcp(3000);
+    cout << "Valendo " << roleta[r_roleta] << " pontos" << endl;
+}
+
+void rodada(Jogador & j, int & p_rodada) {
+    if(j.nome == "Bot 01") {
+		jodada_do_bot(j, p_rodada);
+	}
+    else if(j.nome == "Bot 02") {
+		jodada_do_bot(j, p_rodada);
+    } 
+    else {
+		jogada(j, p_rodada);
+	}
 }
 
 int main() {
