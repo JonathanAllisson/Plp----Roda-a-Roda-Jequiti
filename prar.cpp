@@ -127,7 +127,7 @@ void telaInicial() {
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
 	cout << ">> Carregando..." << endl;
-	sleepcp(1000);	
+	sleepcp(3000);	
 	limparTela();
 }
 
@@ -241,10 +241,12 @@ int girar_roleta(){
 void jogada(Jogador j, int & p_rodada) {
 	char letra;
     int r_roleta = 0;
-    cout << j.nome << ", pressione ENTER para girar a roleta" << endl; 
+    cout << j.nome << ", pressione ENTER para girar a roleta" << endl;
+    scanf("%*c");
+    scanf("%*c");
     r_roleta = girar_roleta();
     cout << "Rodando..."<< endl;
-    sleepcp(1000);
+    sleepcp(3000);
     if(r_roleta == 10){
         cout << "Passou a vez" << endl;
     }
