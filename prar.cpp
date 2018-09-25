@@ -8,14 +8,14 @@
 #include <ctime>
 #include <string>
 #include <unistd.h>
-#include <stdio.h>
+#include <stdio.h>  
 
 using namespace std;
 
 string comeco;
 string sair;
-int opcao;
-int entrada;
+string opcao;
+string entrada;
 int n_rodada = 0;
 string roleta[12] = {"100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "Passou a vez", "Perdeu tudo"};
 
@@ -69,7 +69,7 @@ void opcaoInvalida(bool escolha) {
     cout << "***********************************************************************" << endl;
     cout << "--------------------------- OPCÃO INVÁLIDA ----------------------------" << endl;
     cout << "***********************************************************************" << endl;
-    sleepcp(2000);
+    sleepcp(1000);
     limparTela();
     if(escolha) {
         case1();
@@ -81,15 +81,18 @@ void opcaoInvalida(bool escolha) {
 void case2() {
     comecar();
     limparTela();
-    switch(entrada){
-        case 1:
+    switch(entrada[0]){
+        case '1':
             umJogador();
+            jogo();
             break;
-        case 2:
+        case '2':
             doisJogadores();
+            jogo();
             break;
-        case 3:
+        case '3':
             tresJogadores();
+            jogo();
             break;
         default:
             opcaoInvalida(false);
@@ -99,15 +102,15 @@ void case2() {
 void case1() {
     telaOpcoes();
     limparTela();
-    switch(opcao){
-        case 1:
+    switch(opcao[0]){
+        case '1':
             case2();
             break;
-        case 2:
+        case '2':
             cout << opcao << endl;
 			regras();
             break;
-        case 3:
+        case '3':
             cout << "Ranking em construção" << endl;
             break;
         default:
@@ -130,7 +133,7 @@ void telaInicial() {
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
 	cout << ">> Carregando..." << endl;
-	sleepcp(3000);	
+	sleepcp(1000);	
 	limparTela();
 }
 
@@ -213,7 +216,8 @@ void regras(){
 	cout << "*****SE VOÇÊ ACHA QUE TEM DIREITO A COBRAR QUALQUER VALOR GANHO, TODA E QUALQUER RESPONSABILIDADE SOBRE ESSE JOGO É DO SISTEMA DE TELEVISÃO BRASILEIRO (SBT)*****" << endl;	   
 	cout << ">> Digite a palavra sair para voltar."<< endl;
 	cin >> sair;
-	iniciar();
+    limparTela();
+	case1();
 }
 
 void jogo(){
@@ -264,7 +268,7 @@ void jogada(Jogador j, int & p_rodada) {
 
 void jodada_do_bot(Jogador j, int & p_rodada) {
     int r_roleta = 0;
-    cout << "Vez do(a) "<< j.nome << " girar a roleta" << endl;
+    cout << "Vez do "<< j.nome << " girar a roleta" << endl;
     cout << "Rodando..."<< endl;
     sleepcp(3000);
     cout << "Valendo " << roleta[r_roleta] << " pontos" << endl;
@@ -282,9 +286,33 @@ void rodada(Jogador & j, int & p_rodada) {
 	}
 }
 
+void arquivo(int j) {
+    FILE *arq;
+    char Linha[100];
+    int i = 0;
+    char *result;
+    limparTela();
+
+    arq = fopen("palavrasedicas.txt", "rt");
+
+    if (arq == NULL) {
+        printf("Problemas na abertura do arquivo\n");
+        return;
+    }
+
+    while (!feof(arq)) {
+        result = fgets(Linha, 100, arq);
+        if (i==j) {
+            printf("Linha %d : %s",i,Linha);
+        }
+        i++;
+    }
+
+    fclose(arq);
+}
+
 int main() {
-    srand((unsigned)time(NULL)) ;
+    srand((unsigned)time(NULL));
     iniciar();
-    jogo();
     return 0;
 }

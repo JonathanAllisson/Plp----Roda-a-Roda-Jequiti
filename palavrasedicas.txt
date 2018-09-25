@@ -1,3 +1,10 @@
-fruta maracuja
-pais holanda
-vitoria flavio 
+3
+5
+10
+>> GEOGRAFIA
+Pais: Brasil
+Pais: Cuba
+Pais: 
+>> MUSICA
+>> CINEMA
+>> 
