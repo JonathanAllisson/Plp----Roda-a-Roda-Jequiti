@@ -1,10 +1,13 @@
-3
-5
-10
 >> GEOGRAFIA
 Pais: Brasil
 Pais: Cuba
-Pais: 
->> MUSICA
->> CINEMA
->> 
+Pais: China
+Bioma: Cerrado
+Bioma: Caatinga
+Continente: Europa
+Continente: Africa
+Relevo: Montanha
+Ilha: Madagascar
+Estado: Paraiba
+ 
+
