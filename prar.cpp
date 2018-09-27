@@ -11,6 +11,7 @@ struct Jogador {
 struct Palavra {
     string palavra;
     string palavra_coberta;
+    string dica;
 };
 
 Jogador jogadores[3];
@@ -289,17 +290,19 @@ void novoJogo() {
 }
 
 void jogo(){
+    int countRodada = 0;
 	int vez = 0;
     int pontuacao_rodada_j1 = 0;
     int pontuacao_rodada_j2 = 0;
     int pontuacao_rodada_j3 = 0;
-    while(rodadas > 0) {
-        rodadas -= 3;
+    while(countRodada <= rodadas) {
+        countRodada += 1;
         novoJogo();
         while(!palavraCompleta) {
             continuar = true;
             if (vez == 0) {
                 while(continuar) {
+                    cout << "-> Rodada N°: " << countRodada << endl;
 	                cout << "**************************** PONTUAÇÃO ********************************" << endl;
                     cout << jogadores[0].nome << ": " << pontuacao_rodada_j1 << " // "<< jogadores[1].nome << ": " << pontuacao_rodada_j2 << " // "<< jogadores[2].nome << ": " << pontuacao_rodada_j3 << endl;
                     cout << "***********************************************************************" << endl;
@@ -308,6 +311,7 @@ void jogo(){
                 vez = 1;
             } else if (vez == 1) {
                 while(continuar) {
+                    cout << "-> Rodada N°: " << countRodada << endl;
                     cout << "**************************** PONTUAÇÃO ********************************" << endl;
                     cout << jogadores[0].nome << ": " << pontuacao_rodada_j1 << " // "<< jogadores[1].nome << ": " << pontuacao_rodada_j2 << " // "<< jogadores[2].nome << ": " << pontuacao_rodada_j3 << endl;
                     cout << "***********************************************************************" << endl;
@@ -316,6 +320,7 @@ void jogo(){
                 vez = 2;
             } else {
                 while(continuar) {
+                    cout << "-> Rodada N°: " << countRodada << endl;
                     cout << "**************************** PONTUAÇÃO ********************************" << endl;
                     cout << jogadores[0].nome << ": " << pontuacao_rodada_j1 << " // "<< jogadores[1].nome << ": " << pontuacao_rodada_j2 << " // "<< jogadores[2].nome << ": " << pontuacao_rodada_j3 << endl;
                     cout << "***********************************************************************" << endl;
@@ -433,8 +438,9 @@ void sorteia_palavra(){
 void jogada(Jogador j, int & p_rodada) {
     int r_roleta = 0;
     cout << "Tema: " << temas[stoi(tema_escolhido) - 1] << endl;
+    cout << "Dica: " << palavraDaVez.dica << endl;
     cout << palavraDaVez.palavra_coberta << endl;
-    cout << letrasOcorridas << endl;
+    cout << "Letras já escolhidas: " << letrasOcorridas << endl;
     cout << j.nome << ", pressione ENTER para girar a roleta" << endl;
     scanf("%*c");
     scanf("%*c");
@@ -472,7 +478,8 @@ void jogada(Jogador j, int & p_rodada) {
                 int temp = stoi(roleta[r_roleta]) * count;
                 cout << "Você acertou " << count << " letras e ganhou " << (temp) << " pontos!" << endl;
                 p_rodada += temp;
-                letrasOcorridas += (toupper(letra));
+                letrasOcorridas += toupper(letra);
+                letrasOcorridas += " ";
                 sleepcp(2000);
             } else {
                 cout << "Você não acertou nenhuma letra da palavra." << endl;
@@ -533,7 +540,10 @@ void arquivo(int j) {
 
     while (!feof(arq)) {
         result = fgets(Linha, 100, arq);
-        if (i==j) { 
+        if (i == (j-1)) {
+            palavraDaVez.dica = Linha;
+            palavraDaVez.dica[palavraDaVez.dica.size() - 1] = '\0';
+        } else if (i == j) { 
             palavraDaVez.palavra = Linha;
             for (int k = 0; k < (palavraDaVez.palavra.size() - 1); k++) {
                 if (palavraDaVez.palavra[i] == ' ') {
