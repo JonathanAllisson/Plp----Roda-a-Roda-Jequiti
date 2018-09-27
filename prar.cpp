@@ -418,6 +418,5 @@ int main() {
          sorteia_palavra(tema_escolhido);
          jogo();
     } while (continuar);
-    cout<< palavrasSorteadas<< endl;
     return 0;
 }
