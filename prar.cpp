@@ -18,9 +18,12 @@ string opcao;
 string entrada;
 string tema_escolhido;
 string QtdPalavras;
+int palavras;
 int n_rodada = 0;
+bool palavraSorteada = false;
+bool continuar = true;
+string palavrasSorteadas = "";
 string roleta[21] = {"100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","Passou a vez","Perdeu tudo"};
-
 void telaInicial();
 void iniciar();
 void limparTela();
@@ -34,13 +37,14 @@ void jogo();
 void sleepcp(int milliseconds);
 void opcaoInvalida(bool escolha);
 void case1();
-void case2();
+void case4();
 void sorteia_palavra();
 void escolherTema();
 void escolherQtdPalavras();
-void case1meio();
-void case1e3quarto();
+void case2();
+void case3();
 void opcaoInvalida2();
+void arquivo(int j);
 struct Jogador{
     string nome;
     int pontuacao;
@@ -81,7 +85,7 @@ void opcaoInvalida(bool escolha) {
     if(escolha) {
         case1();
     } else {
-        case2();
+        case4();
     }
 }
 
@@ -92,57 +96,54 @@ void opcaoInvalida2(bool escolha) {
     sleepcp(1000);
     limparTela();
     if(escolha) {
-        case1meio();
+        case2();
     } else {
-        case1e3quarto();
+        case3();
     }
 }
 
-void case2() {
+void case4() {
     comecar();
     limparTela();
     switch(entrada[0]){
         case '1':
             umJogador();
-            jogo();
             break;
         case '2':
             doisJogadores();
-            jogo();
             break;
         case '3':
             tresJogadores();
-            jogo();
             break;
         default:
             opcaoInvalida(false);
     }
 }
 
-void case1e3quarto(){
+void case3(){
     escolherQtdPalavras();
     limparTela();
     switch(QtdPalavras[0]){
         case '3':
-            case2();
+            case4();
             break;
         case '5':
-            case2();
+            case4();
             break;
         case '1':
-            case2();
+            case4();
             break;
         default:
             opcaoInvalida2(false);
     }
 }
 
-void case1meio(){
+void case2(){
     escolherTema();
     limparTela();
     switch(tema_escolhido[0]){
         case '1':
-            case1e3quarto();
+            case3();
             break;
         default:
             opcaoInvalida2(true);
@@ -155,7 +156,7 @@ void case1() {
     limparTela();
     switch(opcao[0]){
         case '1':
-            case1meio();
+            case2();
             break;
         case '2':
             cout << opcao << endl;
@@ -186,7 +187,7 @@ void telaInicial() {
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
 	cout << ">> Carregando..." << endl;
-	sleepcp(1000);	
+	sleepcp(3000);	
 	limparTela();
 }
 
@@ -229,6 +230,7 @@ void escolherQtdPalavras(){
     cout << "																		" << endl;
     cout << ">> Quantas palavras ? " << endl;
 	cin >> QtdPalavras;
+    palavras = atoi(QtdPalavras.c_str());
 	limparTela();
 }
 
@@ -325,9 +327,13 @@ void jogo(){
 int girar_roleta(int n_maximo){
     return rand()% n_maximo;
 }
-int sorteia_palavra(int tema_escolhido){
-    if (tema_escolhido == 1){
-    return rand()% 10 + 1;    
+void sorteia_palavra(string tema_escolhido){
+    palavras-= 1;
+    if(palavras ==0){
+        continuar = false;
+    }
+    if (tema_escolhido == "1"){
+        arquivo(rand()% 10 + 1);
     }
     
 }
@@ -335,30 +341,37 @@ int sorteia_palavra(int tema_escolhido){
 void jogada(Jogador j, int & p_rodada) {
 	char letra;
     int r_roleta = 0;
+    cout << "Tema: " << tema_escolhido << endl;
+    cout << palavrasSorteadas<< endl;
     cout << j.nome << ", pressione ENTER para girar a roleta" << endl;
     scanf("%*c");
     scanf("%*c");
     r_roleta = girar_roleta(20);
     cout << "Rodando..."<< endl;
     sleepcp(3000);
-    if(r_roleta == 10){
+    if(r_roleta == 19){
         cout << "Passou a vez" << endl;
     }
-    else if(r_roleta == 11){
+    else if(r_roleta == 20){
         p_rodada = 0;
         cout << "Perdeu tudo" << endl;
     }else{
         cout << "Valendo " << roleta[r_roleta] << " pontos, digite uma letra:" << endl;
         cin >> letra;
     }
+    limparTela();
 }
 
 void jodada_do_bot(Jogador j, int & p_rodada) {
     int r_roleta = 0;
+    cout << "Tema: " << tema_escolhido << endl;
+    cout << palavrasSorteadas<< endl;
     cout << "Vez do "<< j.nome << " girar a roleta" << endl;
     cout << "Rodando..."<< endl;
     sleepcp(3000);
     cout << "Valendo " << roleta[r_roleta] << " pontos" << endl;
+    sleepcp(2000);
+    limparTela();
 }
 
 void rodada(Jogador & j, int & p_rodada) {
@@ -390,7 +403,7 @@ void arquivo(int j) {
     while (!feof(arq)) {
         result = fgets(Linha, 100, arq);
         if (i==j) {
-            printf("Linha %d : %s",i,Linha);
+            palavrasSorteadas = Linha;
         }
         i++;
     }
@@ -401,5 +414,10 @@ void arquivo(int j) {
 int main() {
     srand((unsigned)time(NULL));
     iniciar();
+     do {
+         sorteia_palavra(tema_escolhido);
+         jogo();
+    } while (continuar);
+    cout<< palavrasSorteadas<< endl;
     return 0;
 }
