@@ -316,6 +316,7 @@ void jogada(Jogador j, int & p_rodada) {
     int r_roleta = 0;
     cout << "Tema: " << tema_escolhido << endl;
     cout << palavraDaVez.palavra_coberta << endl;
+    cout << letrasOcorridas << endl;
     cout << j.nome << ", pressione ENTER para girar a roleta" << endl;
     scanf("%*c");
     scanf("%*c");
@@ -323,41 +324,54 @@ void jogada(Jogador j, int & p_rodada) {
     cout << "Rodando..."<< endl;
     sleepcp(1000);
     if(r_roleta == 19){
+        p_rodada = 0;
         cout << "Passou a vez" << endl;
+        sleepcp(2000);
+        continuar = false;
     } else if(r_roleta == 20){
         p_rodada = 0;
         cout << "Perdeu tudo" << endl;
+        sleepcp(2000);
+        continuar = false;
     } else{
         cout << "Valendo " << roleta[r_roleta] << " pontos, digite uma letra:" << endl;
         cin >> letra;
         letra = toupper(letra);
         int count = 0;
         bool letraJaOcorrida = false;
-        for (int i = 0; i < letrasOcorridas.size(); i++) {
-            if(letra == letrasOcorridas[i]) {
+        for (int i = 0; i <= letrasOcorridas.size(); i++) {
+            if(toupper(letra) == letrasOcorridas[i]) {
                 letraJaOcorrida = true;
+                break;
             }
         }
         if(!letraJaOcorrida) {
             for (int i = 0; i < palavraDaVez.palavra_coberta.size(); i++) {
-                if(palavraDaVez.palavra[i] == letra) {
+                if(palavraDaVez.palavra[i] == toupper(letra)) {
                     count++;
                     palavraDaVez.palavra_coberta[i] = palavraDaVez.palavra[i];
-                    letrasOcorridas += (palavraDaVez.palavra[i] + " ");
+                   
                 }
+             
             }
             if(count != 0) {
-                cout << "Você acertou " << count << "letras e ganhou " << (stoi(roleta[r_roleta]) * count) << " pontos!" << endl;
+                cout << "Você acertou " << count << " letras e ganhou " << (stoi(roleta[r_roleta]) * count) << " pontos!" << endl;
+                letrasOcorridas += (toupper(letra));
+                sleepcp(2000);
             } else {
                 cout << "Você não acertou nenhuma letra da palavra." << endl;
+                sleepcp(2000);
                 continuar = false;
             }
         } else {
             cout << "Letra já escolhida, você perdeu a vez!" << endl;
+            sleepcp(2000);
+            continuar = false;
         }
         if(palavraDaVez.palavra == palavraDaVez.palavra_coberta) {
             palavraCompleta = true;
         }
+           
     }
     limparTela();
 }
