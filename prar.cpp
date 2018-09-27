@@ -24,6 +24,7 @@ bool palavraSorteada = false;
 bool continuar = true;
 string palavrasSorteadas = "";
 string roleta[21] = {"100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","Passou a vez","Perdeu tudo"};
+
 void telaInicial();
 void iniciar();
 void limparTela();
@@ -34,17 +35,16 @@ void doisJogadores();
 void tresJogadores();
 void regras();
 void jogo();
-void sleepcp(int milliseconds);
-void opcaoInvalida(bool escolha);
+void sleepcp(int ms);
+void opcaoInvalida(int escolha);
 void case1();
-void case4();
 void sorteia_palavra();
 void escolherTema();
 void escolherQtdPalavras();
 void case2();
 void case3();
-void opcaoInvalida2();
 void arquivo(int j);
+
 struct Jogador{
     string nome;
     int pontuacao;
@@ -56,15 +56,16 @@ struct Palavra{
 };
 
 Jogador jogadores[3];
+
 void rodada(Jogador &j, int &p_rodada);
 void jodada_do_bot(Jogador j, int & p_rodada);
 void jogada(Jogador j, int & p_rodada);
 
-void sleepcp(int milliseconds) {// Cross-platform sleep function
+void sleepcp(int ms) {// Cross-platform sleep function
     #ifdef WIN32
-        Sleep(milliseconds);
+        Sleep(ms);
     #else
-    -    usleep(milliseconds * 1000);
+    -    usleep(ms * 1000);
     #endif // win32
 }
 
@@ -76,33 +77,24 @@ void limparTela() {
 	#endif
 }
 
-void opcaoInvalida(bool escolha) {
+void opcaoInvalida(int escolha) {
     cout << "***********************************************************************" << endl;
     cout << "--------------------------- OPCÃO INVÁLIDA ----------------------------" << endl;
     cout << "***********************************************************************" << endl;
     sleepcp(1000);
     limparTela();
-    if(escolha) {
+    if(escolha == 1) {
         case1();
-    } else {
-        case4();
-    }
-}
-
-void opcaoInvalida2(bool escolha) {
-    cout << "***********************************************************************" << endl;
-    cout << "--------------------------- OPCÃO INVÁLIDA ----------------------------" << endl;
-    cout << "***********************************************************************" << endl;
-    sleepcp(1000);
-    limparTela();
-    if(escolha) {
+    } else if (escolha == 2) {
         case2();
+    } else if (escolha == 3) {
+        escolherQtdPalavras();
     } else {
         case3();
     }
 }
 
-void case4() {
+void case3() {
     comecar();
     limparTela();
     switch(entrada[0]){
@@ -116,25 +108,7 @@ void case4() {
             tresJogadores();
             break;
         default:
-            opcaoInvalida(false);
-    }
-}
-
-void case3(){
-    escolherQtdPalavras();
-    limparTela();
-    switch(QtdPalavras[0]){
-        case '3':
-            case4();
-            break;
-        case '5':
-            case4();
-            break;
-        case '1':
-            case4();
-            break;
-        default:
-            opcaoInvalida2(false);
+            opcaoInvalida(4);
     }
 }
 
@@ -143,10 +117,10 @@ void case2(){
     limparTela();
     switch(tema_escolhido[0]){
         case '1':
-            case3();
+            escolherQtdPalavras();
             break;
         default:
-            opcaoInvalida2(true);
+            opcaoInvalida(2);
     }
 
 }
@@ -159,18 +133,15 @@ void case1() {
             case2();
             break;
         case '2':
-            cout << opcao << endl;
 			regras();
             break;
         case '3':
             cout << "Ranking em construção" << endl;
             break;
         default:
-            opcaoInvalida(true);
+            opcaoInvalida(1);
     }
 }
-
-
 
 void iniciar() {
 	limparTela();
@@ -187,7 +158,7 @@ void telaInicial() {
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
 	cout << ">> Carregando..." << endl;
-	sleepcp(3000);	
+	sleepcp(1000);	
 	limparTela();
 }
 
@@ -230,8 +201,13 @@ void escolherQtdPalavras(){
     cout << "																		" << endl;
     cout << ">> Quantas palavras ? " << endl;
 	cin >> QtdPalavras;
-    palavras = atoi(QtdPalavras.c_str());
+    if(QtdPalavras != "10" && QtdPalavras != "3" && QtdPalavras != "5") {
+        limparTela();
+        opcaoInvalida(3);
+    }
+    palavras = stoi(QtdPalavras);
 	limparTela();
+    case3();
 }
 
 void comecar(){
@@ -414,7 +390,7 @@ void arquivo(int j) {
 int main() {
     srand((unsigned)time(NULL));
     iniciar();
-     do {
+    do {
          sorteia_palavra(tema_escolhido);
          jogo();
     } while (continuar);
