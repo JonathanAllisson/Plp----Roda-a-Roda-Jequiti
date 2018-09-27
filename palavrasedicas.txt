@@ -1,13 +1,22 @@
->> GEOGRAFIA
-Pais: Brasil
-Pais: Cuba
-Pais: China
-Bioma: Cerrado
-Bioma: Caatinga
-Continente: Europa
-Continente: Africa
-Relevo: Montanha
-Ilha: Madagascar
-Estado: Paraiba
- 
+PAIS
+BRASIL
+PAIS
+CUBA
+PAIS
+CHINA
+BIOMA
+CERRADO
+BIOMA
+CAATINGA
+CONTINENTE
+EUROPA
+CONTINENTE
+AFRICA
+RELEVO
+MONTANHA
+ILHA
+MADAGASCAR
+ESTADO
+PARAIBA
+
 
