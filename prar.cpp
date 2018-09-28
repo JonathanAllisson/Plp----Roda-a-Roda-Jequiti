@@ -37,6 +37,8 @@ string vogais = "AEIOU";
 string consoantes = "BCDFGHJKLMNPQRSTVWXYZ";
 string roleta[21] = {"100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","Passou a vez","Perdeu tudo"};
 
+void jequiti();
+int sortear_numero(int n_maximo);
 char chutaLetra();
 void telaInicial();
 void iniciar();
@@ -86,6 +88,11 @@ void limparTela() {
 	#else
 		system("clear");
 	#endif
+    int n;
+    n = sortear_numero(6);
+    if(n == 0 || n == 3) {
+        jequiti();
+    }
 }
 
 void opcaoInvalida(int escolha) {
@@ -192,6 +199,22 @@ void telaOpcoes(){
     cout << ">> Qual a sua escolha? " << endl;
 	cin >> opcao;
 	limparTela();
+}
+void jequiti(){
+    printf( " ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ \n");
+    printf( "▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌\n");
+    printf( " ▀▀▀▀▀█░█▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌ ▀▀▀▀█░█▀▀▀▀  ▀▀▀▀█░█▀▀▀▀  ▀▀▀▀█░█▀▀▀▀ \n");
+    printf( "      ▐░▌    ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( "      ▐░▌    ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( "      ▐░▌    ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( "      ▐░▌    ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( "      ▐░▌    ▐░▌          ▐░░░░░░░░░░░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( " ▄▄▄▄▄█░▌    ▐░█▄▄▄▄▄▄▄▄▄  ▀▀▀▀▀▀█░█▀▀ ▐░█▄▄▄▄▄▄▄█░▌ ▄▄▄▄█░█▄▄▄▄      ▐░▌      ▄▄▄▄█░█▄▄▄▄ \n");
+    printf( "▐░░░░░░░▌    ▐░░░░░░░░░░░▌        ▐░▌  ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌     ▐░▌     ▐░░░░░░░░░░░▌\n");
+    printf( " ▀▀▀▀▀▀▀      ▀▀▀▀▀▀▀▀▀▀▀          ▀    ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀       ▀       ▀▀▀▀▀▀▀▀▀▀▀ \n");
+    printf( "                                                                                           \n");
+    sleepcp(100);
+    limparTela();
 }
 
 void escolherTema(){
