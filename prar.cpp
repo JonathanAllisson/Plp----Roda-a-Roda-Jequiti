@@ -90,7 +90,7 @@ void limparTela() {
 	#endif
     int n;
     n = sortear_numero(6);
-    if(n == 0 || n == 3) {
+    if(n == 0) {
         jequiti();
     }
 }
