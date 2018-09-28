@@ -47,8 +47,10 @@ void jogo();
 void rodadaFinal();
 void sleepcp(int ms);
 void opcaoInvalida(int escolha);
+void jogandoPalavra(int r_roleta, int & p_rodada);
 void case1();
 void sorteia_palavra();
+int rodandoRoleta();
 void escolherTema();
 void escolherQtdRodadas();
 void case2();
@@ -455,17 +457,12 @@ void sorteia_palavra(){
 }
 
 void jogada(Jogador j, int & p_rodada) {
-    int r_roleta = 0;
     cout << "Tema: " << temas[stoi(tema_escolhido) - 1] << endl;
     cout << "Dica: " << palavraDaVez.dica << endl;
     cout << palavraDaVez.palavra_coberta << endl;
     cout << "Letras já escolhidas: " << letrasOcorridas << endl;
     cout << j.nome << ", pressione ENTER para girar a roleta" << endl;
-    scanf("%*c");
-    scanf("%*c");
-    r_roleta = sortear_numero(20);
-    cout << "Rodando..."<< endl;
-    sleepcp(1000);
+    int r_roleta = rodandoRoleta();
     if(r_roleta == 19){
         cout << "Passou a vez" << endl;
         sleepcp(2000);
@@ -475,52 +472,65 @@ void jogada(Jogador j, int & p_rodada) {
         cout << "Perdeu tudo" << endl;
         sleepcp(2000);
         continuar = false;
-    } else{
-        cout << "Valendo " << roleta[r_roleta] << " pontos, digite uma letra:" << endl;
-        cin >> letra;
-        letra = toupper(letra);
-        int count = 0;
-        bool letraJaOcorrida = false;
-        for (int i = 0; i <= letrasOcorridas.size(); i++) {
-            if(toupper(letra) == letrasOcorridas[i]) {
-                letraJaOcorrida = true;
+    } else {
+        jogandoPalavra(r_roleta, p_rodada);
+    }
+    limparTela();
+}
+
+void jogandoPalavra(int r_roleta, int & p_rodada) {
+    cout << "Valendo " << roleta[r_roleta] << " pontos, digite uma letra:" << endl;
+    cin >> letra;
+    int count = 0;
+    bool letraJaOcorrida = false;
+    for (int i = 0; i <= letrasOcorridas.size(); i++) {
+        if(toupper(letra) == letrasOcorridas[i]) {
+            letraJaOcorrida = true;
+        }
+    }
+    if(!letraJaOcorrida) {
+        for (int i = 0; i < palavraDaVez.palavra_coberta.size(); i++) {
+            if(palavraDaVez.palavra[i] == toupper(letra)) {
+                count++;
+                palavraDaVez.palavra_coberta[i] = palavraDaVez.palavra[i];
             }
         }
-        if(!letraJaOcorrida) {
-            for (int i = 0; i < palavraDaVez.palavra_coberta.size(); i++) {
-                if(palavraDaVez.palavra[i] == toupper(letra)) {
-                    count++;
-                    palavraDaVez.palavra_coberta[i] = palavraDaVez.palavra[i];
-                }
-            }
-            if(count != 0) {
-                int temp = stoi(roleta[r_roleta]) * count;
-                cout << "Você acertou " << count << " letras e ganhou " << (temp) << " pontos!" << endl;
-                p_rodada += temp;
-                letrasOcorridas += toupper(letra);
-                letrasOcorridas += " ";
-                sleepcp(2000);
-            } else {
-                cout << "Você não acertou nenhuma letra da palavra." << endl;
-                sleepcp(2000);
-                continuar = false;
-            }
+        if(count != 0) {
+            int temp = stoi(roleta[r_roleta]) * count;
+            cout << "Você acertou " << count << " letras e ganhou " << (temp) << " pontos!" << endl;
+            p_rodada += temp;
+            letrasOcorridas += toupper(letra);
+            letrasOcorridas += " ";
+            sleepcp(2000);
         } else {
-            cout << "Letra já escolhida, você perdeu a vez!" << endl;
+            cout << "Você não acertou nenhuma letra da palavra." << endl;
             sleepcp(2000);
             continuar = false;
         }
-        palavraCompleta = true;
-        for (int i = 0; i < palavraDaVez.palavra_coberta.size(); i++) {
-            if(palavraDaVez.palavra[i] != palavraDaVez.palavra_coberta[i]) {
-                palavraCompleta = false;
-            }
-        }
-        if(palavraCompleta) {
-            continuar = false;
+    } else {
+        cout << "Letra já escolhida, você perdeu a vez!" << endl;
+        sleepcp(2000);
+        continuar = false;
+    }
+    palavraCompleta = true;
+    for (int i = 0; i < palavraDaVez.palavra_coberta.size(); i++) {
+        if(palavraDaVez.palavra[i] != palavraDaVez.palavra_coberta[i]) {
+            palavraCompleta = false;
         }
     }
-    limparTela();
+    if(palavraCompleta) {
+        continuar = false;
+    }
+}
+
+int rodandoRoleta() {
+    int r_roleta = 0;
+    scanf("%*c");
+    scanf("%*c");
+    r_roleta = sortear_numero(20);
+    cout << "Rodando..."<< endl;
+    sleepcp(2000);
+    return r_roleta;
 }
 
 void jodada_do_bot(Jogador j, int & p_rodada) {
@@ -531,9 +541,11 @@ void jodada_do_bot(Jogador j, int & p_rodada) {
     cout << "Letras já escolhidas: " << letrasOcorridas << endl;
     cout << "Vez do "<< j.nome << " girar a roleta" << endl;
     cout << "Rodando..."<< endl;
-    sleepcp(1000);
+    r_roleta = sortear_numero(20);
+    sleepcp(2000);
     cout << "Valendo " << roleta[r_roleta] << " pontos" << endl;
-    sleepcp(1000);
+    sleepcp(2000);
+
     limparTela();
 }
 
