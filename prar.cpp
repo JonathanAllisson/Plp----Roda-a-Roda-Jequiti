@@ -16,7 +16,7 @@ struct Palavra {
 
 Jogador jogadores[3];
 Palavra palavraDaVez;
-char palavrasJaFoi[10] = {'$', '$', '$', '$', '$', '$', '$', '$', '$', '$'};
+int palavrasJaFoi[10] = {99, 99, 99, 99, 99, 99, 99, 99, 99, 99};
 string temas[5] = {"Geografia", "Marcas", "Filmes"};
 string letrasOcorridas = "";
 string letrasDiferentes = "EIUCHFRJNPMQS";
@@ -199,7 +199,7 @@ void escolherTema(){
     cout << "********************* RODA A RODA JEQUITI *****************************" << endl;
     cout << "-------------------------  Geografia 1  -------------------------------" << endl;
     cout << "--------------------------  Marcas 2  ---------------------------------" << endl;
-    cout << "---------------------------  Filmes 3  --------------------------------" << endl;
+    cout << "--------------------------  Filmes 3  ---------------------------------" << endl;
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
     cout << "																		" << endl;
@@ -213,13 +213,13 @@ void escolherQtdRodadas(){
     cout << "********************* RODA A RODA JEQUITI *****************************" << endl;
     cout << "-------------------------  3 Rodadas ----------------------------------" << endl;
     cout << "-------------------------  5 Rodadas ----------------------------------" << endl;
-    cout << "------------------------- 10 Rodadas ----------------------------------" << endl;
+    cout << "-------------------------- 9 Rodadas ----------------------------------" << endl;
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
     cout << "																		" << endl;
     cout << ">> Quantas rodadas? " << endl;
 	cin >> QtdRodadas;
-    if(QtdRodadas != "10" && QtdRodadas != "3" && QtdRodadas != "5") {
+    if(QtdRodadas != "9" && QtdRodadas != "3" && QtdRodadas != "5") {
         limparTela();
         opcaoInvalida(3);
     }
@@ -406,7 +406,6 @@ void jogo(){
             }
         }
     }
-    jogarNovamente();
 }
 
 void jogarNovamente() {
@@ -493,11 +492,14 @@ void mostraLetrasCertas(Jogador finalista) {
         cout << "-----------------------------------------------------------------------" << endl;
         sleepcp(3000);
     }
+    limparTela();
     cout << "**************************  CRIADORES  ********************************" << endl;
     cout << "-----------------------  Alexandre Ribeiro  ---------------------------" << endl;
     cout << "------------------------  Gaspar Soares  ------------------------------" << endl;
     cout << "----------------------  Jonathan Allisson  -----------------------------" << endl;
+    cout << "-----------------------------------------------------------------------" << endl;
     sleepcp(3000);
+    limparTela();
     jogarNovamente();
 }
 
@@ -806,9 +808,8 @@ void rodada(Jogador & j, int & p_rodada) {
 
 void arquivo(int j) {
     bool pass = true;
-    char ca = j;
     for (int i = 0; i < 10; i++) {
-        if (palavrasJaFoi[i] == ca) {
+        if (palavrasJaFoi[i] == j) {
             pass = false;
         }
     }
@@ -816,8 +817,9 @@ void arquivo(int j) {
         sorteia_palavra();
     } else {
         for (int i = 0; i < 10; i++) {
-            if (palavrasJaFoi[i] == '$') {
-                palavrasJaFoi[i] = ca;
+            if (palavrasJaFoi[i] == 99) {
+                palavrasJaFoi[i] = j;
+                break;
             }
         }
 
@@ -862,8 +864,8 @@ int main() {
     iniciar();
     jogo();
     for (int i = 0; i < 10; i++) {
-        if (palavrasJaFoi[i] != '$') {
-            palavrasJaFoi[i] = '$';
+        if (palavrasJaFoi[i] != 99) {
+            palavrasJaFoi[i] = 99;
         }
     }
     return 0;
