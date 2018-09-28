@@ -774,6 +774,7 @@ void jodada_do_bot(Jogador j, int & p_rodada) {
     cout << "Letras já escolhidas: " << letrasOcorridas << endl;
     cout << "Vez do "<< j.nome << " girar a roleta" << endl;
     cout << "Rodando..."<< endl;
+    sleepcp(2000);
     r_roleta = sortear_numero(20);
     if(r_roleta == 19){
         cout << "Passou a vez" << endl;
