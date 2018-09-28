@@ -493,6 +493,11 @@ void mostraLetrasCertas(Jogador finalista) {
         cout << "-----------------------------------------------------------------------" << endl;
         sleepcp(3000);
     }
+    cout << "**************************  CRIADORES  ********************************" << endl;
+    cout << "-----------------------  Alexandre Ribeiro  ---------------------------" << endl;
+    cout << "------------------------  Gaspar Soares  ------------------------------" << endl;
+    cout << "----------------------  Jonathan Allisson  -----------------------------" << endl;
+    sleepcp(3000);
     jogarNovamente();
 }
 
