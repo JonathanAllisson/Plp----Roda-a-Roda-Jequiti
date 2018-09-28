@@ -16,6 +16,7 @@ struct Palavra {
 
 Jogador jogadores[3];
 Palavra palavraDaVez;
+char palavrasJaFoi[10] = {'$', '$', '$', '$', '$', '$', '$', '$', '$', '$'};
 string temas[5] = {"Geografia", "Marcas", "Filmes"};
 string letrasOcorridas = "";
 string letrasDiferentes = "EIUCHFRJNPMQS";
@@ -137,6 +138,10 @@ void case2(){
             break;
         case '2':
             escolherQtdRodadas();
+            break;
+        case '3':
+            escolherQtdRodadas();
+            break;
         default:
             opcaoInvalida(2);
     }
@@ -301,7 +306,7 @@ void novoJogo() {
 }
 
 void jogo(){
-    int countRodada = 2;
+    int countRodada = 0;
 	int vez = 0;
     int pontuacao_rodada_j1 = 0;
     int pontuacao_rodada_j2 = 0;
@@ -580,7 +585,6 @@ void sorteia_palavra(){
         }
         arquivo(tmp);
     }
-    
 }
 
 void jogada(Jogador j, int & p_rodada) {
@@ -685,9 +689,7 @@ void jogandoPalavraBot(int r_roleta, int & p_rodada){
             c++;
         }
     }
-    if (c <= 3) {
-        cout << "ash9ash89as" << endl;
-        sleepcp(2000);
+    if (c <= 3) {;
         int n;
         n = sortear_numero(6);
         if(n == 0 || n == 3 || n == 4) {
@@ -797,44 +799,66 @@ void rodada(Jogador & j, int & p_rodada) {
 }
 
 void arquivo(int j) {
-    FILE *arq;
-    char Linha[100];
-    int i = 0;
-    char *result;
-    limparTela();
-
-    arq = fopen("palavrasedicas.txt", "rt");
-
-    if (arq == NULL) {
-        printf("Problemas na abertura do arquivo\n");
-        return;
-    }
-
-    while (!feof(arq)) {
-        result = fgets(Linha, 100, arq);
-        if (i == (j-1)) {
-            palavraDaVez.dica = Linha;
-            palavraDaVez.dica[palavraDaVez.dica.size() - 1] = '\0';
-        } else if (i == j) { 
-            palavraDaVez.palavra = Linha;
-            for (int k = 0; k < (palavraDaVez.palavra.size() - 1); k++) {
-                if (palavraDaVez.palavra[i] == ' ') {
-                    palavraDaVez.palavra_coberta += " ";
-                } else {
-                    palavraDaVez.palavra_coberta += "#";
-                }
-            }
-            palavraDaVez.palavra[palavraDaVez.palavra.size() - 1] = '\0';
+    bool pass = true;
+    char ca = j;
+    for (int i = 0; i < 10; i++) {
+        if (palavrasJaFoi[i] == ca) {
+            pass = false;
         }
-        i++;
     }
+    if(!pass) {
+        sorteia_palavra();
+    } else {
+        for (int i = 0; i < 10; i++) {
+            if (palavrasJaFoi[i] == '$') {
+                palavrasJaFoi[i] = ca;
+            }
+        }
 
-    fclose(arq);
+        FILE *arq;
+        char Linha[100];
+        int i = 0;
+        char *result;
+        limparTela();
+
+        arq = fopen("palavrasedicas.txt", "rt");
+
+        if (arq == NULL) {
+            printf("Problemas na abertura do arquivo\n");
+            return;
+        }
+
+        while (!feof(arq)) {
+            result = fgets(Linha, 100, arq);
+            if (i == (j-1)) {
+                palavraDaVez.dica = Linha;
+                palavraDaVez.dica[palavraDaVez.dica.size() - 1] = '\0';
+            } else if (i == j) { 
+                palavraDaVez.palavra = Linha;
+                for (int k = 0; k < (palavraDaVez.palavra.size() - 1); k++) {
+                    if (palavraDaVez.palavra[i] == ' ') {
+                        palavraDaVez.palavra_coberta += " ";
+                    } else {
+                        palavraDaVez.palavra_coberta += "#";
+                    }
+                }
+                palavraDaVez.palavra[palavraDaVez.palavra.size() - 1] = '\0';
+            }
+            i++;
+        }
+
+        fclose(arq);
+    }
 }
 
 int main() {
     srand((unsigned)time(NULL));
     iniciar();
     jogo();
+    for (int i = 0; i < 10; i++) {
+        if (palavrasJaFoi[i] != '$') {
+            palavrasJaFoi[i] = '$';
+        }
+    }
     return 0;
 }
