@@ -1,4 +1,8 @@
 import Control.Concurrent
+import Control.Monad
+import Data.Char
+
+roleta = (100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, "Passou a vez", "Perdeu tudo")
 
 limpaTela = do
     putStr "\ESC[2J"
@@ -20,7 +24,11 @@ regras = do
     putStrLn "*****SE VOÇÊ ACHA QUE TEM DIREITO A COBRAR QUALQUER VALOR GANHO, TODA E QUALQUER RESPONSABILIDADE SOBRE ESSE JOGO É DO SISTEMA DE TELEVISÃO BRASILEIRO (SBT)*****"  
     putStrLn ">> Digite a palavra sair para voltar."
     threadDelay 2000000
+    inp <- getLine
+    when (map toUpper inp /= "SAIR") $ do
+        regras
     limpaTela
+    case1
 
 opcaoInvalida :: IO()
 opcaoInvalida = do
@@ -70,13 +78,18 @@ escolherTema = do
 
 case2 :: IO()
 case2 = do
+    limpaTela
     escolherTema
-    putStrLn "chegou ate aqui"
+    input <- getLine
+    case input of "1" -> putStr "1"
+                  "2" -> putStr "2"
+                  "3" -> putStrLn "3"
+                  _ -> opcaoInvalida
 
 case1 :: IO()
 case1 = do
     telaDeOpcoes
-    op <- getLine 
+    op <- getLine
     case op of "1" -> case2
                "2" -> regras
                _ -> opcaoInvalida 
