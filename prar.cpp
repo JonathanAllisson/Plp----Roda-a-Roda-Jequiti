@@ -758,7 +758,7 @@ int rodandoRoleta() {
     int r_roleta = 0;
     scanf("%*c");
     scanf("%*c");
-    r_roleta = sortear_numero(20);
+    r_roleta = sortear_numero(21);
     cout << "Rodando..."<< endl;
     sleepcp(2000);
     return r_roleta;
