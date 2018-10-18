@@ -16,6 +16,7 @@ struct Palavra {
 
 Jogador jogadores[3];
 Palavra palavraDaVez;
+int palavrasJaFoi[10] = {99, 99, 99, 99, 99, 99, 99, 99, 99, 99};
 string temas[5] = {"Geografia", "Marcas", "Filmes"};
 string letrasOcorridas = "";
 string letrasDiferentes = "EIUCHFRJNPMQS";
@@ -36,6 +37,8 @@ string vogais = "AEIOU";
 string consoantes = "BCDFGHJKLMNPQRSTVWXYZ";
 string roleta[21] = {"100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","Passou a vez","Perdeu tudo"};
 
+void jequiti();
+int sortear_numero(int n_maximo);
 char chutaLetra();
 void telaInicial();
 void iniciar();
@@ -85,6 +88,11 @@ void limparTela() {
 	#else
 		system("clear");
 	#endif
+    int n;
+    n = sortear_numero(6);
+    if(n == 0) {
+        jequiti();
+    }
 }
 
 void opcaoInvalida(int escolha) {
@@ -137,6 +145,10 @@ void case2(){
             break;
         case '2':
             escolherQtdRodadas();
+            break;
+        case '3':
+            escolherQtdRodadas();
+            break;
         default:
             opcaoInvalida(2);
     }
@@ -188,13 +200,29 @@ void telaOpcoes(){
 	cin >> opcao;
 	limparTela();
 }
+void jequiti(){
+    printf( " ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ \n");
+    printf( "▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌\n");
+    printf( " ▀▀▀▀▀█░█▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌ ▀▀▀▀█░█▀▀▀▀  ▀▀▀▀█░█▀▀▀▀  ▀▀▀▀█░█▀▀▀▀ \n");
+    printf( "      ▐░▌    ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( "      ▐░▌    ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( "      ▐░▌    ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( "      ▐░▌    ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( "      ▐░▌    ▐░▌          ▐░░░░░░░░░░░▌▐░▌       ▐░▌     ▐░▌          ▐░▌          ▐░▌     \n");
+    printf( " ▄▄▄▄▄█░▌    ▐░█▄▄▄▄▄▄▄▄▄  ▀▀▀▀▀▀█░█▀▀ ▐░█▄▄▄▄▄▄▄█░▌ ▄▄▄▄█░█▄▄▄▄      ▐░▌      ▄▄▄▄█░█▄▄▄▄ \n");
+    printf( "▐░░░░░░░▌    ▐░░░░░░░░░░░▌        ▐░▌  ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌     ▐░▌     ▐░░░░░░░░░░░▌\n");
+    printf( " ▀▀▀▀▀▀▀      ▀▀▀▀▀▀▀▀▀▀▀          ▀    ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀       ▀       ▀▀▀▀▀▀▀▀▀▀▀ \n");
+    printf( "                                                                                           \n");
+    sleepcp(100);
+    limparTela();
+}
 
 void escolherTema(){
 	cout << "-----------------------------------------------------------------------" << endl;
     cout << "********************* RODA A RODA JEQUITI *****************************" << endl;
     cout << "-------------------------  Geografia 1  -------------------------------" << endl;
     cout << "--------------------------  Marcas 2  ---------------------------------" << endl;
-    cout << "---------------------------  Filmes 3  --------------------------------" << endl;
+    cout << "--------------------------  Filmes 3  ---------------------------------" << endl;
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
     cout << "																		" << endl;
@@ -208,13 +236,13 @@ void escolherQtdRodadas(){
     cout << "********************* RODA A RODA JEQUITI *****************************" << endl;
     cout << "-------------------------  3 Rodadas ----------------------------------" << endl;
     cout << "-------------------------  5 Rodadas ----------------------------------" << endl;
-    cout << "------------------------- 10 Rodadas ----------------------------------" << endl;
+    cout << "-------------------------- 9 Rodadas ----------------------------------" << endl;
     cout << "***********************************************************************" << endl;
     cout << "-----------------------------------------------------------------------" << endl;
     cout << "																		" << endl;
     cout << ">> Quantas rodadas? " << endl;
 	cin >> QtdRodadas;
-    if(QtdRodadas != "10" && QtdRodadas != "3" && QtdRodadas != "5") {
+    if(QtdRodadas != "9" && QtdRodadas != "3" && QtdRodadas != "5") {
         limparTela();
         opcaoInvalida(3);
     }
@@ -301,7 +329,7 @@ void novoJogo() {
 }
 
 void jogo(){
-    int countRodada = 2;
+    int countRodada = 0;
 	int vez = 0;
     int pontuacao_rodada_j1 = 0;
     int pontuacao_rodada_j2 = 0;
@@ -401,7 +429,6 @@ void jogo(){
             }
         }
     }
-    jogarNovamente();
 }
 
 void jogarNovamente() {
@@ -488,6 +515,14 @@ void mostraLetrasCertas(Jogador finalista) {
         cout << "-----------------------------------------------------------------------" << endl;
         sleepcp(3000);
     }
+    limparTela();
+    cout << "**************************  CRIADORES  ********************************" << endl;
+    cout << "-----------------------  Alexandre Ribeiro  ---------------------------" << endl;
+    cout << "------------------------  Gaspar Soares  ------------------------------" << endl;
+    cout << "----------------------  Jonathan Allisson  -----------------------------" << endl;
+    cout << "-----------------------------------------------------------------------" << endl;
+    sleepcp(3000);
+    limparTela();
     jogarNovamente();
 }
 
@@ -580,7 +615,6 @@ void sorteia_palavra(){
         }
         arquivo(tmp);
     }
-    
 }
 
 void jogada(Jogador j, int & p_rodada) {
@@ -685,9 +719,7 @@ void jogandoPalavraBot(int r_roleta, int & p_rodada){
             c++;
         }
     }
-    if (c <= 3) {
-        cout << "ash9ash89as" << endl;
-        sleepcp(2000);
+    if (c <= 3) {;
         int n;
         n = sortear_numero(6);
         if(n == 0 || n == 3 || n == 4) {
@@ -772,6 +804,7 @@ void jodada_do_bot(Jogador j, int & p_rodada) {
     cout << "Letras já escolhidas: " << letrasOcorridas << endl;
     cout << "Vez do "<< j.nome << " girar a roleta" << endl;
     cout << "Rodando..."<< endl;
+    sleepcp(2000);
     r_roleta = sortear_numero(20);
     if(r_roleta == 19){
         cout << "Passou a vez" << endl;
@@ -797,44 +830,66 @@ void rodada(Jogador & j, int & p_rodada) {
 }
 
 void arquivo(int j) {
-    FILE *arq;
-    char Linha[100];
-    int i = 0;
-    char *result;
-    limparTela();
-
-    arq = fopen("palavrasedicas.txt", "rt");
-
-    if (arq == NULL) {
-        printf("Problemas na abertura do arquivo\n");
-        return;
-    }
-
-    while (!feof(arq)) {
-        result = fgets(Linha, 100, arq);
-        if (i == (j-1)) {
-            palavraDaVez.dica = Linha;
-            palavraDaVez.dica[palavraDaVez.dica.size() - 1] = '\0';
-        } else if (i == j) { 
-            palavraDaVez.palavra = Linha;
-            for (int k = 0; k < (palavraDaVez.palavra.size() - 1); k++) {
-                if (palavraDaVez.palavra[i] == ' ') {
-                    palavraDaVez.palavra_coberta += " ";
-                } else {
-                    palavraDaVez.palavra_coberta += "#";
-                }
-            }
-            palavraDaVez.palavra[palavraDaVez.palavra.size() - 1] = '\0';
+    bool pass = true;
+    for (int i = 0; i < 10; i++) {
+        if (palavrasJaFoi[i] == j) {
+            pass = false;
         }
-        i++;
     }
+    if(!pass) {
+        sorteia_palavra();
+    } else {
+        for (int i = 0; i < 10; i++) {
+            if (palavrasJaFoi[i] == 99) {
+                palavrasJaFoi[i] = j;
+                break;
+            }
+        }
 
-    fclose(arq);
+        FILE *arq;
+        char Linha[100];
+        int i = 0;
+        char *result;
+        limparTela();
+
+        arq = fopen("palavrasedicas.txt", "rt");
+
+        if (arq == NULL) {
+            printf("Problemas na abertura do arquivo\n");
+            return;
+        }
+
+        while (!feof(arq)) {
+            result = fgets(Linha, 100, arq);
+            if (i == (j-1)) {
+                palavraDaVez.dica = Linha;
+                palavraDaVez.dica[palavraDaVez.dica.size() - 1] = '\0';
+            } else if (i == j) { 
+                palavraDaVez.palavra = Linha;
+                for (int k = 0; k < (palavraDaVez.palavra.size() - 1); k++) {
+                    if (palavraDaVez.palavra[i] == ' ') {
+                        palavraDaVez.palavra_coberta += " ";
+                    } else {
+                        palavraDaVez.palavra_coberta += "#";
+                    }
+                }
+                palavraDaVez.palavra[palavraDaVez.palavra.size() - 1] = '\0';
+            }
+            i++;
+        }
+
+        fclose(arq);
+    }
 }
 
 int main() {
     srand((unsigned)time(NULL));
     iniciar();
     jogo();
+    for (int i = 0; i < 10; i++) {
+        if (palavrasJaFoi[i] != 99) {
+            palavrasJaFoi[i] = 99;
+        }
+    }
     return 0;
 }
