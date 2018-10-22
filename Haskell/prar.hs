@@ -2,9 +2,20 @@ import Control.Concurrent
 import Control.Monad
 import Data.Char
 
+type Nome = String
+type Pontuacao = Integer
+type Jogador = (Nome, Pontuacao)
+
+nome :: Jogador -> Nome
+nome (n, p) = n
+
+pontuacao :: Jogador -> Pontuacao
+pontuacao (n, p) = p
+
 roleta = (100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, "Passou a vez", "Perdeu tudo")
 rodadas = 0
 tema = " "
+nJogadores = 0
 
 limpaTela = do
     putStr "\ESC[2J"
@@ -42,6 +53,8 @@ opcaoInvalida x = do
     limpaTela
     case x of 1 -> case1
               2 -> case2
+              3 -> case3
+              4 -> case4
 
 telaInicial :: IO()
 telaInicial = do
@@ -90,32 +103,44 @@ escolherQtdRodadas = do
     putStrLn "***********************************************************************"
     putStrLn "--------------------- RODA A RODA JEQUITI -----------------------------"
     putStrLn "***********************************************************************"
-    putStrLn "------------------- /*/ MODIFICAR AINDA /*/ ---------------------------"
-    putStrLn "------------------------- 3 rodadas -----------------------------------"
-    putStrLn "------------------------- 5 rodadas -----------------------------------"
-    putStrLn "------------------------- 9 rodadas -----------------------------------"
+    putStrLn "------------------------ /*/ De 1 a 9 /*/ -----------------------------"
+    putStrLn "------------------ Quantas rodadas você quer jogar? -------------------"
     putStrLn "-----------------------------------------------------------------------"
     putStrLn "***********************************************************************"
     putStrLn "\t"
     putStrLn ">> Qual a sua escolha? "
 
+case4 :: IO()
+case4 = do
+    limpaTela
+    comecar  
+    nJogadores <- readLn :: IO Int
+    case nJogadores of 1 -> umJogador
+                       2 -> putStr "ainda por fazert"
+                       3 -> putStr "ainda por fazer"
+                       _ -> opcaoInvalida 4
+    
+    
 case3 :: IO()
 case3 = do
     limpaTela
     escolherQtdRodadas
     rodadas <- readLn :: IO Int
-    putStrLn ( show( rodadas))
-    threadDelay 2000000
-
+    when (rodadas < 1 || rodadas > 9) $ do
+        opcaoInvalida 3
+    case4
+    
+    
 case2 :: IO()
 case2 = do
     limpaTela
     escolherTema
     input <- getLine
-    if (input /= "1" && input /= "2" && input /= "3") then opcaoInvalida 2
-    else tema = input
-        
-
+    when (input /= "1" && input /= "2" && input /= "3") $ do
+        opcaoInvalida 2
+    let tema = input
+    case3
+    
 case1 :: IO()
 case1 = do
     telaDeOpcoes
@@ -124,7 +149,27 @@ case1 = do
                "2" -> regras
                _ -> opcaoInvalida 1
 
+comecar :: IO()
+comecar = do
+    putStrLn "***********************************************************************"
+    putStrLn "--------------------- RODA A RODA JEQUITI -----------------------------"
+    putStrLn "***********************************************************************"
+    putStrLn "----------------------- ESCOLHA UMA OPCAO:: ---------------------------"
+    putStrLn "--------------------- UM JOGADOR DIGITE 1 -----------------------------"
+    putStrLn "----------------------DOIS JOGADORES DIGITE 2 -------------------------"
+    putStrLn "----------------------TRES JOGADORES DIGITE 3--------------------------"
+    putStrLn "-----------------------------------------------------------------------"
+    putStrLn "***********************************************************************"
+    putStrLn "\t"
+    putStrLn ">> Qual a sua escolha?"
 
+umJogador = do
+    putStrLn ">> Digite seu nome: "
+    n <- getLine
+    let joga = (n, 0)
+    putStrLn (nome joga) 
+    putStrLn (show (pontuacao joga) )
+    
 iniciar = do
     limpaTela
     telaInicial
