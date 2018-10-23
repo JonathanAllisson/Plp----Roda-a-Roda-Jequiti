@@ -12,10 +12,14 @@ nome (n, p) = n
 pontuacao :: Jogador -> Pontuacao
 pontuacao (n, p) = p
 
+jogadores = ["Bot 01", "Bot 02", "Bot 03"]
 roleta = (100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, "Passou a vez", "Perdeu tudo")
 rodadas = 0
 tema = " "
 nJogadores = 0
+jogador1 = ("Bot 01", 0)
+jogador2 = ("Bot 02", 0)
+jogador3 = ("Bot 03", 0)
 
 limpaTela = do
     putStr "\ESC[2J"
@@ -41,7 +45,6 @@ regras = do
     when (map toUpper inp /= "SAIR") $ do
         regras
     limpaTela
-    case1
 
 opcaoInvalida :: Int -> IO()
 opcaoInvalida x = do
@@ -116,8 +119,8 @@ case4 = do
     comecar  
     nJogadores <- readLn :: IO Int
     case nJogadores of 1 -> umJogador
-                       2 -> putStr "ainda por fazert"
-                       3 -> putStr "ainda por fazer"
+                       2 -> doisJogadores
+                       3 -> tresJogadores
                        _ -> opcaoInvalida 4
     
     
@@ -164,17 +167,60 @@ comecar = do
     putStrLn ">> Qual a sua escolha?"
 
 umJogador = do
+    limpaTela
     putStrLn ">> Digite seu nome: "
     n <- getLine
-    let joga = (n, 0)
-    putStrLn (nome joga) 
-    putStrLn (show (pontuacao joga) )
-    
+    let jogador1 = (n, 0)
+    let jogador2 = ("Bot 01", 0)
+    let jogador3 = ("Bot 02", 0)
+    limpaTela
+
+doisJogadores = do
+    limpaTela
+    putStrLn ">> Jogador 01, digite seu nome: "
+    n <- getLine
+    putStrLn ">> Jogador 02, digite seu nome: "
+    n2 <- getLine
+    let jogador1 = (n, 0)
+    let jogador2 = (n2, 0)
+    let jogador3 = ("Bot 03", 0)
+    limpaTela
+
+tresJogadores = do
+    limpaTela
+    putStrLn ">> Jogador 01, digite seu nome: "
+    n <- getLine
+    putStrLn ">> Jogador 02, digite seu nome: "
+    n2 <- getLine
+    putStrLn ">> Jogador 03, digite seu nome: "
+    n3 <- getLine
+    let jogador1 = (n, 0)
+    let jogador2 = (n2, 0)
+    let jogador3 = (n3, 0)
+    limpaTela
+
 iniciar = do
     limpaTela
     telaInicial
     case1
-    
 
+{- jogo :: Int -> IO()
+jogo 0 = pontuacaoVencedorFinal
+jogo _ = do    
+    let countRodada = 0
+    let vez = 0
+    let pontuacaoRodadaJ1 = 0
+    let pontuacaoRodadaJ2 = 0
+    let pontuacaoRodadaJ3 = 0
+    print (countRodada vez pontuacaoRodadaJ1 pontuacaoRodadaJ2 pontuacaoRodadaJ3)
+
+pontuacaoVencedorFinal :: IO()
+pontuacaoVencedorFinal = do
+    let pontuacaoJogadorFinal = max pontuacao jogador1 pontuacao jogador2 pontuacao jogador3
+    print pontuacaoJogadorFinal
+
+-}
 main = do
     iniciar
+    print (nome jogador1, (pontuacao jogador1), (pontuacao jogador3))
+   -- jogo rodadas
