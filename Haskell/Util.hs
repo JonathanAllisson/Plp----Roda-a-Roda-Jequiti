@@ -1,14 +1,23 @@
-
 module Util (
     regras,
     telaInicial,
     telaDeOpcoes,
     escolherTema,
     escolherQtdRodadas,
-    comecar
+    comecar,
+    opcaoInvalidaPt
 ) where
         
 import Control.Concurrent
+import Control.Monad
+import Data.Char
+
+opcaoInvalidaPt :: IO()
+opcaoInvalidaPt = do
+    putStrLn "***********************************************************************"
+    putStrLn "--------------------------- OPCÃO INVÁLIDA ----------------------------"
+    putStrLn "***********************************************************************"
+    threadDelay 2000000
 
 regras :: IO()
 regras = do
@@ -39,9 +48,7 @@ telaInicial = do
     putStrLn "--------------------------  JEQUITI  ----------------------------------"
     putStrLn "***********************************************************************"
     putStrLn "-----------------------------------------------------------------------"
-    putStrLn ">> Carregando..." 
-    threadDelay 2000000
-
+    putStrLn ">> Carregando..."
 
 telaDeOpcoes :: IO()
 telaDeOpcoes = do
@@ -56,7 +63,6 @@ telaDeOpcoes = do
     putStrLn "***********************************************************************"
     putStrLn "\t"
     putStrLn ">> Qual a sua escolha?"
-
 
 escolherTema :: IO()
 escolherTema = do
@@ -73,7 +79,6 @@ escolherTema = do
     putStrLn "\t"
     putStrLn ">> Qual a sua escolha? "
     
-
 escolherQtdRodadas :: IO()
 escolherQtdRodadas = do
     putStrLn "***********************************************************************"
@@ -85,8 +90,6 @@ escolherQtdRodadas = do
     putStrLn "***********************************************************************"
     putStrLn "\t"
     putStrLn ">> Qual a sua escolha? "
-
-
 
 comecar :: IO()
 comecar = do

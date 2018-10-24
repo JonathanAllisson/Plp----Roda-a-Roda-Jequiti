@@ -4,34 +4,20 @@ import Data.Char
 
 import Util
 
-
-jogadores = ["Bot 01", "Bot 02", "Bot 03"]
-pontuacoes = [0, 0, 0]
 roleta = (100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, "Passou a vez", "Perdeu tudo")
-rodadas = 0
-tema = " "
-nJogadores = 0
 
 limpaTela = do
     putStr "\ESC[2J"
 
-
-
 opcaoInvalida :: Int -> IO()
 opcaoInvalida x = do
     limpaTela
-    putStrLn "***********************************************************************"
-    putStrLn "--------------------------- OPCÃO INVÁLIDA ----------------------------"
-    putStrLn "***********************************************************************"
-    threadDelay 2000000
+    opcaoInvalidaPt
     limpaTela
     case x of 1 -> case1
               2 -> case2
               3 -> case3
               4 -> case4
-
- 
-
 
 case4 :: IO()
 case4 = do
@@ -42,8 +28,7 @@ case4 = do
                        2 -> doisJogadores
                        3 -> tresJogadores
                        _ -> opcaoInvalida 4
-    
-    
+        
 case3 :: IO()
 case3 = do
     limpaTela
@@ -52,7 +37,6 @@ case3 = do
     when (rodadas < 1 || rodadas > 9) $ do
         opcaoInvalida 3
     case4
-    
     
 case2 :: IO()
 case2 = do
@@ -66,6 +50,8 @@ case2 = do
     
 case1 :: IO()
 case1 = do
+    limpaTela
+    telaInicial
     telaDeOpcoes
     op <- getLine
     case op of "1" -> case2
@@ -99,17 +85,11 @@ tresJogadores = do
     print(n, n2, n3, "ainda por fazer")
     limpaTela
 
-iniciar = do
-    limpaTela
-    telaInicial
-    case1
-
 jogo :: Int -> Int -> Int -> Int-> IO()
 jogo a b c 1 = pontuacaoVencedorFinal a b c
 jogo _ _ _ _= do
     print ("gsj")
     print ("gsj")
-
 
 pontuacaoVencedorFinal :: Int -> Int -> Int -> IO()
 pontuacaoVencedorFinal a b c = do
@@ -117,4 +97,4 @@ pontuacaoVencedorFinal a b c = do
     print pontuacaoJogadorFinal
 
 main = do
-    iniciar
+    case1
