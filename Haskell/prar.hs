@@ -2,6 +2,7 @@ import Control.Concurrent
 import Control.Monad
 import Data.Char
 import System.IO
+import System.Random
 
 import Util
 
@@ -67,11 +68,11 @@ case1 = do
 
 escrever :: String -> IO()
 escrever s = do
-            writeFile "sistema.txt" s
+            writeFile "sistema.txt" (s ++ "\n")
 
 anexar :: String -> IO()
 anexar s = do
-            appendFile "sistema.txt" ("\n" ++ s)
+            appendFile "sistema.txt" (s ++ "\n")
 
 ler :: Int -> Int -> Handle -> Int -> IO()
 ler i f handle c | (i == f) = do
@@ -81,6 +82,19 @@ ler i f handle c | (i == f) = do
                  | otherwise = do
                             s <- hGetLine handle
                             ler (i+1) f handle c
+
+ler_pontuacao :: Int -> Int -> Handle -> IO()
+ler_pontuacao i f handle | (i == f) = do
+                                    s1 <- hGetLine handle
+                                    s2 <- hGetLine handle
+                                    s3 <- hGetLine handle
+                                    s4 <- hGetLine handle
+                                    s5 <- hGetLine handle
+                                    s6 <- hGetLine handle
+                                    pontuacao_jogadores s1 (read s2 :: Int) s3 (read s4 :: Int) s5 (read s6 :: Int)
+                         | otherwise = do
+                                    s <- hGetLine handle
+                                    ler_pontuacao (i+1) f handle
 
 umJogador = do
     limpaTela
@@ -130,9 +144,14 @@ jogo i n | ((i-1) == n) = do
          | otherwise = do
                 putStrLn(">> Rodada N°: " ++ show(i))
                 handle <- openFile "sistema.txt" ReadMode
+                ler_pontuacao 1 3 handle
+                hClose handle
+                handle <- openFile "sistema.txt" ReadMode
                 ler 1 1 handle 1
                 hClose handle
                 jogo (i+1) n
+
+sortear_palavra 
 
 main = do
     limpaTela

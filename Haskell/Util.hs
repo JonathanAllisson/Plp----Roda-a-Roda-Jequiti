@@ -6,7 +6,8 @@ module Util (
     escolherQtdRodadas,
     comecar,
     opcaoInvalidaPt,
-    tema
+    tema,
+    pontuacao_jogadores
 ) where
         
 import Control.Concurrent
@@ -111,3 +112,8 @@ tema n = do
     case n of 1 -> putStrLn("Tema: Geografia")
               2 -> putStrLn("Tema: Marcas")
               3 -> putStrLn("Tema: Filmes")
+
+pontuacao_jogadores :: String -> Int -> String -> Int -> String -> Int -> IO()
+pontuacao_jogadores j1 p1 j2 p2 j3 p3 = do
+    putStrLn("**************************** Pontuação: *******************************")
+    putStrLn(j1 ++ ": " ++ show(p1) ++ " pontos" ++ "     ||     " ++ j2 ++ ": " ++ show(p2) ++ " pontos" ++ "     ||     " ++ j3 ++ ": " ++ show(p3) ++ " pontos\n")
