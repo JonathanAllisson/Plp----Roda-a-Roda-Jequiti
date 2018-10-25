@@ -35,24 +35,29 @@ case3 = do
     limpaTela
     escolherQtdRodadas
     rodadas <- readLn :: IO Int
-    when (rodadas < 1 || rodadas > 9) $ do
-        opcaoInvalida 3
-    case4
+    if (rodadas < 1 || rodadas > 9)
+        then do
+            opcaoInvalida 3
+    else
+        do
+            anexar (show(rodadas))
+            case4
     
 case2 :: IO()
 case2 = do
     limpaTela
     escolherTema
     input <- getLine
-    when (input /= "1" && input /= "2" && input /= "3") $ do
-        opcaoInvalida 2
-    escrever (show(input))
-    case3
+    if (input /= "1" && input /= "2" && input /= "3")
+        then do
+            opcaoInvalida 2
+    else
+        do
+            escrever (show(input))
+            case3
     
 case1 :: IO()
 case1 = do
-    limpaTela
-    telaInicial
     limpaTela
     telaDeOpcoes
     op <- getLine
@@ -62,33 +67,51 @@ case1 = do
 
 escrever :: String -> IO()
 escrever s = do
-            appendFile "sistema.txt" s
+            writeFile "sistema.txt" s
+
+anexar :: String -> IO()
+anexar s = do
+            appendFile "sistema.txt" ("\n" ++ s)
+
+ler :: Int -> Int -> Handle -> IO()
+ler i f handle | (i == f) = do
+                            s <- hGetLine handle
+                            putStrLn (s)
+               | otherwise = do
+                            s <- hGetLine handle
+                            ler (i+1) f handle
 
 umJogador = do
     limpaTela
     putStrLn ">> Digite seu nome: "
     n <- getLine
-    print(n, "ainda por fazer")
+    anexar (n)
+    anexar ("Bot 01")
+    anexar ("Bot 02")
     limpaTela
 
 doisJogadores = do
     limpaTela
     putStrLn ">> Jogador 01, digite seu nome: "
     n <- getLine
+    anexar (n)
     putStrLn ">> Jogador 02, digite seu nome: "
     n2 <- getLine
-    print(n,n2, "ainda por fazer") 
+    anexar (n2)
+    anexar ("Bot 01") 
     limpaTela
 
 tresJogadores = do
     limpaTela
     putStrLn ">> Jogador 01, digite seu nome: "
     n <- getLine
+    anexar (n)
     putStrLn ">> Jogador 02, digite seu nome: "
     n2 <- getLine
+    anexar (n2)
     putStrLn ">> Jogador 03, digite seu nome: "
     n3 <- getLine
-    print(n, n2, n3, "ainda por fazer")
+    anexar (n3)
     limpaTela
 
 jogo :: Int -> Int -> Int -> Int-> IO()
@@ -103,4 +126,9 @@ pontuacaoVencedorFinal a b c = do
     print pontuacaoJogadorFinal
 
 main = do
+    limpaTela
+    telaInicial
     case1
+    handle <- openFile "sistema.txt" ReadMode
+    ler 1 3 handle
+    hClose handle
