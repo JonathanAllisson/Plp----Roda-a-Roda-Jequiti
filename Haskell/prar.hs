@@ -1,6 +1,7 @@
 import Control.Concurrent
 import Control.Monad
 import Data.Char
+import System.IO
 
 import Util
 
@@ -45,18 +46,23 @@ case2 = do
     input <- getLine
     when (input /= "1" && input /= "2" && input /= "3") $ do
         opcaoInvalida 2
-    let tema = (input)
+    escrever (show(input))
     case3
     
 case1 :: IO()
 case1 = do
     limpaTela
     telaInicial
+    limpaTela
     telaDeOpcoes
     op <- getLine
     case op of "1" -> case2
                "2" -> regras
                _ -> opcaoInvalida 1
+
+escrever :: String -> IO()
+escrever s = do
+            appendFile "sistema.txt" s
 
 umJogador = do
     limpaTela
