@@ -5,7 +5,8 @@ module Util (
     escolherTema,
     escolherQtdRodadas,
     comecar,
-    opcaoInvalidaPt
+    opcaoInvalidaPt,
+    tema
 ) where
         
 import Control.Concurrent
@@ -104,3 +105,9 @@ comecar = do
     putStrLn "***********************************************************************"
     putStrLn "\t"
     putStrLn ">> Qual a sua escolha?"
+
+tema :: Int -> IO()
+tema n = do
+    case n of 1 -> putStrLn("Tema: Geografia")
+              2 -> putStrLn("Tema: Marcas")
+              3 -> putStrLn("Tema: Filmes")

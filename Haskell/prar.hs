@@ -47,13 +47,13 @@ case2 :: IO()
 case2 = do
     limpaTela
     escolherTema
-    input <- getLine
-    if (input /= "1" && input /= "2" && input /= "3")
+    tema <- readLn :: IO Int
+    if (tema < 1 || tema > 3)
         then do
             opcaoInvalida 2
     else
         do
-            escrever (show(input))
+            escrever (show(tema))
             case3
     
 case1 :: IO()
@@ -73,21 +73,25 @@ anexar :: String -> IO()
 anexar s = do
             appendFile "sistema.txt" ("\n" ++ s)
 
-ler :: Int -> Int -> Handle -> IO()
-ler i f handle | (i == f) = do
+ler :: Int -> Int -> Handle -> Int -> IO()
+ler i f handle c | (i == f) = do
                             s <- hGetLine handle
-                            putStrLn (s)
-               | otherwise = do
+                            case c of 1 -> tema (read s :: Int)
+                                      2 -> jogo 1 (read s :: Int)
+                 | otherwise = do
                             s <- hGetLine handle
-                            ler (i+1) f handle
+                            ler (i+1) f handle c
 
 umJogador = do
     limpaTela
     putStrLn ">> Digite seu nome: "
     n <- getLine
     anexar (n)
+    anexar (show(0))
     anexar ("Bot 01")
+    anexar (show(0))
     anexar ("Bot 02")
+    anexar (show(0))
     limpaTela
 
 doisJogadores = do
@@ -95,10 +99,13 @@ doisJogadores = do
     putStrLn ">> Jogador 01, digite seu nome: "
     n <- getLine
     anexar (n)
+    anexar (show(0))
     putStrLn ">> Jogador 02, digite seu nome: "
     n2 <- getLine
     anexar (n2)
+    anexar (show(0))
     anexar ("Bot 01") 
+    anexar (show(0))
     limpaTela
 
 tresJogadores = do
@@ -106,29 +113,32 @@ tresJogadores = do
     putStrLn ">> Jogador 01, digite seu nome: "
     n <- getLine
     anexar (n)
+    anexar (show(0))
     putStrLn ">> Jogador 02, digite seu nome: "
     n2 <- getLine
     anexar (n2)
+    anexar (show(0))
     putStrLn ">> Jogador 03, digite seu nome: "
     n3 <- getLine
     anexar (n3)
+    anexar (show(0))
     limpaTela
 
-jogo :: Int -> Int -> Int -> Int-> IO()
-jogo a b c 1 = pontuacaoVencedorFinal a b c
-jogo _ _ _ _= do
-    print ("gsj")
-    print ("gsj")
-
-pontuacaoVencedorFinal :: Int -> Int -> Int -> IO()
-pontuacaoVencedorFinal a b c = do
-    let pontuacaoJogadorFinal = max (max a b) c
-    print pontuacaoJogadorFinal
+jogo :: Int -> Int -> IO()
+jogo i n | ((i-1) == n) = do
+                putStrLn("Fim")
+         | otherwise = do
+                putStrLn(">> Rodada N°: " ++ show(i))
+                handle <- openFile "sistema.txt" ReadMode
+                ler 1 1 handle 1
+                hClose handle
+                jogo (i+1) n
 
 main = do
     limpaTela
     telaInicial
     case1
     handle <- openFile "sistema.txt" ReadMode
-    ler 1 3 handle
+    ler 1 2 handle 2
     hClose handle
+    threadDelay 2000000
