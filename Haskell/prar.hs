@@ -78,7 +78,8 @@ ler :: Int -> Int -> Handle -> Int -> IO()
 ler i f handle c | (i == f) = do
                             s <- hGetLine handle
                             case c of 1 -> tema (read s :: Int)
-                                      2 -> jogo 1 (read s :: Int)
+                                      2 -> rodada 1 (read s :: Int)
+                                      3 -> sortear_numero (read s :: Int)
                  | otherwise = do
                             s <- hGetLine handle
                             ler (i+1) f handle c
@@ -138,8 +139,17 @@ tresJogadores = do
     anexar (show(0))
     limpaTela
 
-jogo :: Int -> Int -> IO()
-jogo i n | ((i-1) == n) = do
+jogo :: IO()
+jogo = do
+    handle <- openFile "sistema.txt" ReadMode
+    ler 1 2 handle 2
+    hClose handle
+    handle <- openFile "sistema.txt" ReadMode
+    ler 1 1 handle 3
+    hClose handle
+
+rodada :: Int -> Int -> IO()
+rodada i n | ((i-1) == n) = do
                 putStrLn("Fim")
          | otherwise = do
                 putStrLn(">> Rodada N°: " ++ show(i))
@@ -149,15 +159,34 @@ jogo i n | ((i-1) == n) = do
                 handle <- openFile "sistema.txt" ReadMode
                 ler 1 1 handle 1
                 hClose handle
-                jogo (i+1) n
+                rodada (i+1) n
 
-sortear_palavra 
+sortear_numero :: Int -> IO()
+sortear_numero c = do
+    if (c == 1) 
+        then do
+            num <- randomRIO (1::Int, 20)
+            if (mod num 2 == 0) then
+                putStrLn(show(num-1))
+            else
+                putStrLn(show(num))
+    else if (c == 2) 
+        then do
+            num <- randomRIO (21::Int, 40)
+            if (mod num 2 == 0) then
+                putStrLn(show(num-1))
+            else
+                putStrLn(show(num))
+    else do
+        num <- randomRIO (41::Int, 60)
+        if (mod num 2 == 0) then
+            putStrLn(show(num-1))
+        else
+            putStrLn(show(num))
 
 main = do
     limpaTela
     telaInicial
     case1
-    handle <- openFile "sistema.txt" ReadMode
-    ler 1 2 handle 2
-    hClose handle
+    jogo
     threadDelay 2000000
