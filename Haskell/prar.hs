@@ -66,37 +66,6 @@ case1 = do
                "2" -> regras
                _ -> opcaoInvalida 1
 
-escrever :: String -> IO()
-escrever s = do
-            writeFile "sistema.txt" (s ++ "\n")
-
-anexar :: String -> IO()
-anexar s = do
-            appendFile "sistema.txt" (s ++ "\n")
-
-ler :: Int -> Int -> Handle -> Int -> IO()
-ler i f handle c | (i == f) = do
-                            s <- hGetLine handle
-                            case c of 1 -> tema (read s :: Int)
-                                      2 -> rodada 1 (read s :: Int)
-                                      3 -> sortear_numero (read s :: Int)
-                 | otherwise = do
-                            s <- hGetLine handle
-                            ler (i+1) f handle c
-
-ler_pontuacao :: Int -> Int -> Handle -> IO()
-ler_pontuacao i f handle | (i == f) = do
-                                    s1 <- hGetLine handle
-                                    s2 <- hGetLine handle
-                                    s3 <- hGetLine handle
-                                    s4 <- hGetLine handle
-                                    s5 <- hGetLine handle
-                                    s6 <- hGetLine handle
-                                    pontuacao_jogadores s1 (read s2 :: Int) s3 (read s4 :: Int) s5 (read s6 :: Int)
-                         | otherwise = do
-                                    s <- hGetLine handle
-                                    ler_pontuacao (i+1) f handle
-
 umJogador = do
     limpaTela
     putStrLn ">> Digite seu nome: "
@@ -139,27 +108,73 @@ tresJogadores = do
     anexar (show(0))
     limpaTela
 
+escrever :: String -> IO()
+escrever s = do
+            writeFile "sistema.txt" (s)
+
+anexar :: String -> IO()
+anexar s = do
+            appendFile "sistema.txt" ("\n" ++ s)
+
+ler :: Int -> Int -> Handle -> Int -> IO()
+ler i f handle c | (i == f) = do
+                            s <- hGetLine handle
+                            hClose handle
+                            case c of 1 -> tema (read s :: Int)
+                                      2 -> sortear_numero (read s :: Int)
+                 | otherwise = do
+                            s <- hGetLine handle
+                            ler (i+1) f handle c
+
+ler_pontuacao :: Int -> Int -> Handle -> IO()
+ler_pontuacao i f handle | (i == f) = do
+                                    s1 <- hGetLine handle
+                                    s2 <- hGetLine handle
+                                    s3 <- hGetLine handle
+                                    s4 <- hGetLine handle
+                                    s5 <- hGetLine handle
+                                    s6 <- hGetLine handle
+                                    hClose handle
+                                    pontuacao_jogadores s1 (read s2 :: Int) s3 (read s4 :: Int) s5 (read s6 :: Int)
+                         | otherwise = do
+                                    s <- hGetLine handle
+                                    ler_pontuacao (i+1) f handle
+
+ler_rodada :: Int -> Int -> Handle -> Int -> IO()
+ler_rodada i f handle r | (i == f) = do
+                            s1 <- hGetLine handle
+                            s2 <- hGetLine handle
+                            hClose handle
+                            rodada 1 r s1 s2
+                        | otherwise = do
+                            s <- hGetLine handle
+                            ler_rodada (i+1) f handle r
+
 jogo :: IO()
 jogo = do
     handle <- openFile "sistema.txt" ReadMode
-    ler 1 2 handle 2
-    hClose handle
-    handle <- openFile "sistema.txt" ReadMode
-    ler 1 1 handle 3
-    hClose handle
+    ler 1 1 handle 2
 
-rodada :: Int -> Int -> IO()
-rodada i n | ((i-1) == n) = do
-                putStrLn("Fim")
-         | otherwise = do
-                putStrLn(">> Rodada N°: " ++ show(i))
-                handle <- openFile "sistema.txt" ReadMode
-                ler_pontuacao 1 3 handle
-                hClose handle
-                handle <- openFile "sistema.txt" ReadMode
-                ler 1 1 handle 1
-                hClose handle
-                rodada (i+1) n
+rodada :: Int -> Int -> String -> String -> IO()
+rodada i n dica palavra | ((i-1) == n) = do
+                                putStrLn("Fim")
+                      | otherwise = do
+                                putStrLn(">> Rodada N°: " ++ show(i))
+                                handle <- openFile "sistema.txt" ReadMode
+                                ler_pontuacao 1 3 handle
+                                handle <- openFile "sistema.txt" ReadMode
+                                ler 1 1 handle 1
+                                rodada (i+1) n dica palavra
+
+
+ler_rodada_aux :: Int -> IO()
+ler_rodada_aux n = do
+    handle <- openFile "sistema.txt" ReadMode
+    tmp <- hGetLine handle
+    s <- hGetLine handle
+    hClose handle
+    handle <- openFile "palavrasedicas.txt" ReadMode
+    ler_rodada 1 n handle (read s :: Int)
 
 sortear_numero :: Int -> IO()
 sortear_numero c = do
@@ -167,22 +182,28 @@ sortear_numero c = do
         then do
             num <- randomRIO (1::Int, 20)
             if (mod num 2 == 0) then
-                putStrLn(show(num-1))
+                --putStrLn(show(num-1))
+                ler_rodada_aux (num-1)
             else
-                putStrLn(show(num))
+                --putStrLn(show(num))
+                ler_rodada_aux num
     else if (c == 2) 
         then do
             num <- randomRIO (21::Int, 40)
             if (mod num 2 == 0) then
-                putStrLn(show(num-1))
+                --putStrLn(show(num-1))
+                ler_rodada_aux (num-1)
             else
-                putStrLn(show(num))
+                --putStrLn(show(num))
+                ler_rodada_aux num
     else do
         num <- randomRIO (41::Int, 60)
         if (mod num 2 == 0) then
-            putStrLn(show(num-1))
+            --putStrLn(show(num-1))
+            ler_rodada_aux (num-1)
         else
-            putStrLn(show(num))
+            --putStrLn(show(num))
+            ler_rodada_aux num
 
 main = do
     limpaTela
