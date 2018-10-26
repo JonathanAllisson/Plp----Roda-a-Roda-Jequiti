@@ -325,6 +325,7 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
                 else do 
                     putStrLn("Que pena, você errou a palavra...")
                     threadDelay 2000000
+                    clearScreen
                     rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 24)
             else do
                 putStrLn(">> Valendo " ++ rol ++ " pontos por letra. " ++ (pegar_nome jogas 1 z) ++ " digite a palavra corretamente: ")
