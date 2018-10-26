@@ -7,7 +7,8 @@ module Util (
     comecar,
     opcaoInvalidaPt,
     tema,
-    pontuacao_jogadores
+    pontuacao_jogadores,
+    letraEscolhida
 ) where
         
 import Control.Concurrent
@@ -96,16 +97,21 @@ escolherQtdRodadas = do
 comecar :: IO()
 comecar = do
     putStrLn "***********************************************************************"
-    putStrLn "--------------------- RODA A RODA JEQUITI -----------------------------"
+    putStrLn "---------------------- RODA A RODA JEQUITI ----------------------------"
     putStrLn "***********************************************************************"
-    putStrLn "----------------------- ESCOLHA UMA OPCAO:: ---------------------------"
-    putStrLn "--------------------- UM JOGADOR DIGITE 1 -----------------------------"
-    putStrLn "----------------------DOIS JOGADORES DIGITE 2 -------------------------"
-    putStrLn "----------------------TRES JOGADORES DIGITE 3--------------------------"
+    putStrLn "------------------------ /*/ De 1 a 3 /*/ -----------------------------"
+    putStrLn "----------------------- Quantos jogadores? ----------------------------"
     putStrLn "-----------------------------------------------------------------------"
     putStrLn "***********************************************************************"
     putStrLn "\t"
     putStrLn ">> Qual a sua escolha?"
+
+letraEscolhida :: IO()
+letraEscolhida = do 
+    putStrLn("***********************************************************************")
+    putStrLn("************************* Letra já escolhida **************************")
+    putStrLn("***********************************************************************")
+    threadDelay 2000000
 
 tema :: Int -> IO()
 tema n = do
@@ -116,4 +122,5 @@ tema n = do
 pontuacao_jogadores :: String -> Int -> String -> Int -> String -> Int -> IO()
 pontuacao_jogadores j1 p1 j2 p2 j3 p3 = do
     putStrLn("**************************** Pontuação: *******************************")
-    putStrLn(j1 ++ ": " ++ show(p1) ++ " pontos" ++ "     ||     " ++ j2 ++ ": " ++ show(p2) ++ " pontos" ++ "     ||     " ++ j3 ++ ": " ++ show(p3) ++ " pontos\n")
+    putStrLn(j1 ++ ": " ++ show(p1) ++ " pontos" ++ "     ||     " ++ j2 ++ ": " ++ show(p2) ++ " pontos" ++ "     ||     " ++ j3 ++ ": " ++ show(p3) ++ " pontos")
+    putStrLn("***********************************************************************")
