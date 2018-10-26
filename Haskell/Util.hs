@@ -8,7 +8,8 @@ module Util (
     opcaoInvalidaPt,
     tema,
     pontuacao_jogadores,
-    letraEscolhida
+    letraEscolhida,
+    pontuacao_jogadores_geral
 ) where
         
 import Control.Concurrent
@@ -126,3 +127,14 @@ pontuacao_jogadores j1 p1 j2 p2 j3 p3 = do
     putStrLn("**************************** Pontuação: *******************************")
     putStrLn(j1 ++ ": " ++ show(p1) ++ " pontos" ++ "     ||     " ++ j2 ++ ": " ++ show(p2) ++ " pontos" ++ "     ||     " ++ j3 ++ ": " ++ show(p3) ++ " pontos")
     putStrLn("***********************************************************************")
+
+pontuacao_jogadores_geral :: String -> Int -> String -> Int -> String -> Int -> IO()
+pontuacao_jogadores_geral j1 p1 j2 p2 j3 p3 = do
+    clearScreen
+    putStrLn("***********************************************************************")
+    putStrLn("------------------------- PONTUAÇÃO GERAL -----------------------------")
+    putStrLn("***********************************************************************")
+    putStrLn(">> Pontuação do(a) jogador(a) " ++ j1 ++ ": " ++ show(p1) ++ " pontos.")
+    putStrLn(">> Pontuação do(a) jogador(a) " ++ j2 ++ ": " ++ show(p2) ++ " pontos.")
+    putStrLn(">> Pontuação do(a) jogador(a) " ++ j3 ++ ": " ++ show(p3) ++ " pontos.")
+    threadDelay 2000000
