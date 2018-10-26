@@ -7,6 +7,11 @@ import System.Console.ANSI
 
 import Util
 
+type Pessoa = String
+type Pontuacao = Int
+type Jogador = (Pessoa, Pontuacao)
+type Jogadores = [Jogador]
+
 roleta = (100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, "Passou a vez", "Perdeu tudo")
 
 opcaoInvalida :: Int -> Int -> Int -> IO()
@@ -67,125 +72,97 @@ umJogador tem rod = do
     clearScreen
     putStrLn ">> Digite seu nome: "
     n <- getLine
-    escrever (n)
-    anexar (show(0))
-    anexar ("Bot 01")
-    anexar (show(0))
-    anexar ("Bot 02")
-    anexar (show(0))
     clearScreen
-    jogo tem rod
+    jogo tem rod [(n, 0), ("Bot 01", 0), ("Bot 02", 0)]
 
 doisJogadores :: Int -> Int -> IO()
 doisJogadores tem rod = do
     clearScreen
     putStrLn ">> Jogador 01, digite seu nome: "
     n <- getLine
-    escrever (n)
-    anexar (show(0))
     putStrLn ">> Jogador 02, digite seu nome: "
     n2 <- getLine
-    anexar (n2)
-    anexar (show(0))
-    anexar ("Bot 01") 
-    anexar (show(0))
     clearScreen
-    jogo tem rod
+    jogo tem rod [(n, 0), (n2, 0), ("Bot 01", 0)]
 
 tresJogadores :: Int -> Int -> IO()
 tresJogadores tem rod = do
     clearScreen
     putStrLn ">> Jogador 01, digite seu nome: "
     n <- getLine
-    escrever (n)
-    anexar (show(0))
     putStrLn ">> Jogador 02, digite seu nome: "
     n2 <- getLine
-    anexar (n2)
-    anexar (show(0))
     putStrLn ">> Jogador 03, digite seu nome: "
     n3 <- getLine
-    anexar (n3)
-    anexar (show(0))
     clearScreen
-    jogo tem rod
+    jogo tem rod [(n, 0), (n2, 0), (n3, 0)]
 
-escrever :: String -> IO()
-escrever s = do
-    writeFile "sistema.txt" (s)
-
-anexar :: String -> IO()
-anexar s = do
-    appendFile "sistema.txt" ("\n" ++ s)
-
-ler_pontuacao :: Int -> Int -> Handle -> IO()
-ler_pontuacao i f handle  = do
-        s1 <- hGetLine handle
-        s2 <- hGetLine handle
-        s3 <- hGetLine handle
-        s4 <- hGetLine handle
-        s5 <- hGetLine handle
-        s6 <- hGetLine handle
-        hClose handle
-        pontuacao_jogadores s1 (read s2 :: Int) s3 (read s4 :: Int) s5 (read s6 :: Int)
-
-ler_rodada :: Int -> Int -> Handle -> Int -> Int -> Int -> IO()
-ler_rodada i f handle n tem rod
+ler_rodada :: Int -> Int -> Handle -> Int -> Int -> Int -> Jogadores -> IO()
+ler_rodada i f handle n tem rod jogas
     | (i == f) = do
         s1 <- hGetLine handle
         s2 <- hGetLine handle
         hClose handle
-        rodadas n s1 s2 tem rod
+        rodadas n s1 s2 tem rod jogas
     | otherwise = do
         s <- hGetLine handle
-        ler_rodada (i+1) f handle n tem rod
+        ler_rodada (i+1) f handle n tem rod jogas
 
-jogo :: Int -> Int -> IO()
-jogo tem rod = do
-    sortear_numero 1 tem rod
+jogo :: Int -> Int -> Jogadores -> IO()
+jogo tem rod jogas = do
+    sortear_numero 1 tem rod jogas
 
-sortear_numero :: Int -> Int -> Int-> IO()
-sortear_numero n tem rod = do
+sortear_numero :: Int -> Int -> Int -> Jogadores -> IO()
+sortear_numero n tem rod jogas = do
     handle <- openFile "palavrasedicas.txt" ReadMode
     if (tem == 1) 
         then do
             num <- randomRIO (1::Int, 20)
             if (mod num 2 == 0) then
-                ler_rodada 1 (num-1) handle n tem rod
+                ler_rodada 1 (num-1) handle n tem rod jogas
             else
-                ler_rodada 1 num handle n tem rod
+                ler_rodada 1 num handle n tem rod jogas
     else if (tem == 2) 
         then do
             num <- randomRIO (21::Int, 40)
             if (mod num 2 == 0) then
-                ler_rodada 1 (num-1) handle n tem rod
+                ler_rodada 1 (num-1) handle n tem rod jogas
             else
-                ler_rodada 1 num handle n tem rod
+                ler_rodada 1 num handle n tem rod jogas
     else do
         num <- randomRIO (41::Int, 60)
         if (mod num 2 == 0) then
-            ler_rodada 1 (num-1) handle n tem rod
+            ler_rodada 1 (num-1) handle n tem rod jogas
         else
-            ler_rodada 1 num handle n tem rod
+            ler_rodada 1 num handle n tem rod jogas
 
-rodadas :: Int -> String -> String -> Int -> Int -> IO()
-rodadas n dica palavra tem rod
+rodadas :: Int -> String -> String -> Int -> Int -> Jogadores -> IO()
+rodadas n dica palavra tem rod jogas
     | (((rod + 1) - n) == 0) = do
         putStrLn("Fim")
     | otherwise = do
-        rodada n dica palavra (cobrir_palavra (length palavra)) "" tem rod
-        sortear_numero (n+1) tem rod
+        rodada n dica palavra (cobrir_palavra (length palavra)) "" tem rod jogas
+        sortear_numero (n+1) tem rod jogas
 
-rodada :: Int -> String -> String -> String -> String -> Int -> Int -> IO()
-rodada n dica palavra coberta escolhidas tem rod
+pegar_nome :: Jogadores -> Int -> Int -> String
+pegar_nome [] i n = []
+pegar_nome ((y, _):xs) i n | (n == i) = y
+                           | otherwise = pegar_nome xs n (i+1)
+
+pegar_pontuacao :: Jogadores -> Int -> Int -> Int
+pegar_pontuacao [] i n = 0
+pegar_pontuacao ((_, y):xs) i n | (n == i) = y
+                                | otherwise = pegar_pontuacao xs n (i+1)
+
+rodada :: Int -> String -> String -> String -> String -> Int -> Int -> Jogadores -> IO()
+rodada n dica palavra coberta escolhidas tem rod jogas
     | ((qnt_coberta coberta) == 0) = do
         putStrLn("xi")
     | ((qnt_coberta coberta) < 4) = do
         putStrLn("eita")
     | otherwise = do
         putStrLn(">> Rodada N°: " ++ show(n))
-        handle <- openFile "sistema.txt" ReadMode
-        ler_pontuacao 1 3 handle
+        pontuacao_jogadores (pegar_nome jogas 1 1) (pegar_pontuacao jogas 1 1) (pegar_nome jogas 1 2) (pegar_pontuacao jogas 1 2) (pegar_nome jogas 1 3) (pegar_pontuacao jogas 1 3)
         tema tem
         putStrLn("Dica: " ++ dica)
         putStrLn("Palavra: " ++ coberta ++ " ||| " ++ palavra)
@@ -196,10 +173,10 @@ rodada n dica palavra coberta escolhidas tem rod
             clearScreen
             letraEscolhida
             clearScreen
-            rodada n dica palavra coberta escolhidas tem rod
+            rodada n dica palavra coberta escolhidas tem rod jogas
         else do
             clearScreen
-            rodada n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod
+            rodada n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas
 
 existe_letra :: String -> Char -> Bool
 existe_letra [] _ = False
