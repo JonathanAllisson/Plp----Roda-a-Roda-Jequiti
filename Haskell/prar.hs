@@ -160,9 +160,9 @@ pegar_item :: Int -> Int -> [String] -> String
 pegar_item i n (x:xs) | (i == n) = x
                         | otherwise = pegar_item (i+1) n xs
 
-pegar_numero :: -> Jogadores -> Int -> Int -> Int
-pegar_numero [(_, y)] = i
-pegar_numero [(_, y):xs] i n | (y == n) = i
+pegar_numero :: Jogadores -> Int -> Int -> Int
+pegar_numero [(_, y)] i n = i
+pegar_numero ((_, y):xs) i n | (y == n) = i
                              | otherwise = pegar_numero xs (i+1) n
 
 rodadas :: Int -> Int -> String -> String -> Int -> Int -> Jogadores -> Jogadores -> IO()
@@ -196,7 +196,7 @@ rodadas z n dica palavra tem rod jogas jogasT
             putStrLn("Valendo " ++ rol ++ " pontos por letra, digite uma vogal e 4 consoantes.")
             putStrLn("Letras já escolhidas: ")
             v <- getLine
-            let lje1 = [v] ++ " "
+            let lje1 = v ++ " "
             clearScreen
             putStrLn(">> Rodada Final:")
             putStrLn("Dica: " ++ dica)
@@ -204,7 +204,7 @@ rodadas z n dica palavra tem rod jogas jogasT
             putStrLn("Valendo " ++ rol ++ " pontos por letra, digite uma vogal e 4 consoantes.")
             putStrLn("Letras já escolhidas: " ++ lje1)
             c1 <- getLine
-            let lje2 = lje1 ++ [c1] ++ " "
+            let lje2 = lje1 ++ c1 ++ " "
             clearScreen
             putStrLn(">> Rodada Final:")
             putStrLn("Dica: " ++ dica)
@@ -212,7 +212,7 @@ rodadas z n dica palavra tem rod jogas jogasT
             putStrLn("Valendo " ++ rol ++ " pontos por letra, digite uma vogal e 4 consoantes.")
             putStrLn("Letras já escolhidas: " ++ lje2)
             c2 <- getLine
-            let lje3 = lje2 ++ [c2] ++ " "
+            let lje3 = lje2 ++ c2 ++ " "
             clearScreen
             putStrLn(">> Rodada Final:")
             putStrLn("Dica: " ++ dica)
@@ -220,7 +220,7 @@ rodadas z n dica palavra tem rod jogas jogasT
             putStrLn("Valendo " ++ rol ++ " pontos por letra, digite uma vogal e 4 consoantes.")
             putStrLn("Letras já escolhidas: " ++ lje3)
             c3 <- getLine
-            let lje4 = lje3 ++ [c3] ++ " "
+            let lje4 = lje3 ++ c3 ++ " "
             clearScreen
             putStrLn(">> Rodada Final:")
             putStrLn("Dica: " ++ dica)
@@ -231,31 +231,31 @@ rodadas z n dica palavra tem rod jogas jogasT
             clearScreen
             putStrLn(">> Rodada Final:")
             putStrLn("Dica: " ++ dica)
-            let cob1 = (descobrir_letra palavra coberta v)
+            let cob1 = (descobrir_letra palavra coberta (toUpper (head v)))
             putStrLn("Palavra: " ++ cob1 ++ " ||| " ++ palavra)
             threadDelay 2000000
             clearScreen
             putStrLn(">> Rodada Final:")
             putStrLn("Dica: " ++ dica)
-            let cob2 = (descobrir_letra palavra cob1 c1)
+            let cob2 = (descobrir_letra palavra cob1 (toUpper (head c1)))
             putStrLn("Palavra: " ++ cob2 ++ " ||| " ++ palavra)
             threadDelay 2000000
             clearScreen
             putStrLn(">> Rodada Final:")
             putStrLn("Dica: " ++ dica)
-            let cob3 = (descobrir_letra palavra cob2 c2)
+            let cob3 = (descobrir_letra palavra cob2 (toUpper (head c2)))
             putStrLn("Palavra: " ++ cob3 ++ " ||| " ++ palavra)
             threadDelay 2000000
             clearScreen
             putStrLn(">> Rodada Final:")
             putStrLn("Dica: " ++ dica)
-            let cob4 = (descobrir_letra palavra cob3 c3)
+            let cob4 = (descobrir_letra palavra cob3 (toUpper (head c3)))
             putStrLn("Palavra: " ++ cob4 ++ " ||| " ++ palavra)
             threadDelay 2000000
             clearScreen
             putStrLn(">> Rodada Final:")
             putStrLn("Dica: " ++ dica)
-            let cob5 = (descobrir_letra palavra cob4 c4)
+            let cob5 = (descobrir_letra palavra cob4 (toUpper (head c4)))
             putStrLn("Palavra: " ++ cob5 ++ " ||| " ++ palavra)
             threadDelay 2000000
             clearScreen
