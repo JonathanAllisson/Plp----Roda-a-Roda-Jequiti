@@ -343,9 +343,11 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
                         rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 24)
                         putStrLn("Que pena, você errou a palavra...")
                         threadDelay 2000000
+                        clearScreen
                 else do 
                     putStrLn("Que pena, você errou a palavra...")
                     threadDelay 2000000
+                    clearScreen
                     rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 24)
     | otherwise = do
         let z = if (i > 3) then 1 else i
