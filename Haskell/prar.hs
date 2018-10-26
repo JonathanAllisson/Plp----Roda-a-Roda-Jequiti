@@ -259,7 +259,7 @@ rodadas z n dica palavra tem rod jogas jogasT
             putStrLn("Palavra: " ++ cob5 ++ " ||| " ++ palavra)
             putStrLn("Por favor, digite a palavra corretamente para ganhar 1 MILHÃO DE REAIS!!!")
             pl <- getLine
-            if (palavra_correta palavra pl) then do
+            if (palavra_correta pl palavra) then do
                 putStrLn "***********************************************************************"
                 putStrLn "************ PARABÉNS, VOCÊ GANHOU 1 MILHÃO DE REAIS ******************"
                 putStrLn "***********************************************************************"
@@ -370,8 +370,10 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
         else do
             if ((pegar_nome jogas 1 z) == "Bot 01" || (pegar_nome jogas 1 z) == "Bot 02") then do
                 putStrLn(">> Valendo " ++ rol ++ " pontos por letra, " ++ pegar_nome jogas 1 z ++ " digite uma letra: ")
+                threadDelay 2000000
                 let lel = (pegar_item 1 sortea letras)
-                threadDelay 1000000
+                putStrLn(lel)
+                threadDelay 2000000
                 if (existe_letra escolhidas (toUpper (head lel))) then do
                     clearScreen
                     letraEscolhida
