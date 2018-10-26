@@ -13,7 +13,7 @@ type Pontuacao = Int
 type Jogador = (Pessoa, Pontuacao)
 type Jogadores = [Jogador]
 
-roleta = ["100", "150", "200", "250", "300", "350", "400", "450", "500", "550", "600", "650", "700", "750", "800", "850", "900", "950", "1000", "Passou a vez", "Perdeu tudo"]
+roleta = ["100", "150", "200", "250", "Passou a vez", "300", "350", "400", "450", "500", "550", "Passou a vez", "600", "650", "700", "750", "Perdeu tudo", "800", "850", "900", "950", "1000", "Passou a vez", "Perdeu tudo"]
 
 opcaoInvalida :: Int -> Int -> Int -> IO()
 opcaoInvalida x tem rod = do
@@ -40,7 +40,7 @@ case3 tem = do
     clearScreen
     escolherQtdRodadas
     rod <- readLn :: IO Int
-    if (rod < 1 || rod > 9)
+    if (rod < 1 || rod > 10)
         then do
             opcaoInvalida 3 tem 0
     else
@@ -161,10 +161,99 @@ rodar_roleta i n (x:xs) | (i == n) = x
 rodadas :: Int -> Int -> String -> String -> Int -> Int -> Jogadores -> Jogadores -> IO()
 rodadas z n dica palavra tem rod jogas jogasT
     | (((rod + 1) - n) == 0) = do
-        putStrLn("Fim")
+        clearScreen
+        pontuacao_jogadores_geral (pegar_nome jogas 1 1) (pegar_pontuacao jogas 1 1) (pegar_nome jogas 1 2) (pegar_pontuacao jogas 1 2) (pegar_nome jogas 1 3) (pegar_pontuacao jogas 1 3)
+        threadDelay 2000000
+        let sortea = (sortear_numero_roleta 1 24)
+        let coberta = cobrir_palavra palavra
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        putStrLn("Palavra: " ++ coberta ++ " ||| " ++ palavra)
+        putStrLn("Girando a roleta...")
+        let rol = rodar_roleta 1 (sortea) roleta
+        threadDelay 2000000
+        putStrLn("Valendo " ++ rol ++ " pontos por letra, digite uma vogal e 4 consoantes.")
+        putStrLn("Letras já escolhidas: ")
+        v <- getChar
+        let lje1 = [v] ++ " "
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        putStrLn("Palavra: " ++ coberta ++ " ||| " ++ palavra)
+        putStrLn("Valendo " ++ rol ++ " pontos por letra, digite uma vogal e 4 consoantes.")
+        putStrLn("Letras já escolhidas: " ++ lje1)
+        c1 <- getChar
+        let lje2 = lje1 ++ [c1] ++ " "
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        putStrLn("Palavra: " ++ coberta ++ " ||| " ++ palavra)
+        putStrLn("Valendo " ++ rol ++ " pontos por letra, digite uma vogal e 4 consoantes.")
+        putStrLn("Letras já escolhidas: " ++ lje2)
+        c2 <- getChar
+        let lje3 = lje2 ++ [c2] ++ " "
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        putStrLn("Palavra: " ++ coberta ++ " ||| " ++ palavra)
+        putStrLn("Valendo " ++ rol ++ " pontos por letra, digite uma vogal e 4 consoantes.")
+        putStrLn("Letras já escolhidas: " ++ lje3)
+        c3 <- getChar
+        let lje4 = lje3 ++ [c3] ++ " "
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        putStrLn("Palavra: " ++ coberta ++ " ||| " ++ palavra)
+        putStrLn("Valendo " ++ rol ++ " pontos por letra, digite uma vogal e 4 consoantes.")
+        putStrLn("Letras já escolhidas: " ++ lje4)
+        c4 <- getChar
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        let cob1 = (descobrir_letra palavra coberta v)
+        putStrLn("Palavra: " ++ cob1 ++ " ||| " ++ palavra)
+        threadDelay 2000000
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        let cob2 = (descobrir_letra palavra cob1 c1)
+        putStrLn("Palavra: " ++ cob2 ++ " ||| " ++ palavra)
+        threadDelay 2000000
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        let cob3 = (descobrir_letra palavra cob2 c2)
+        putStrLn("Palavra: " ++ cob3 ++ " ||| " ++ palavra)
+        threadDelay 2000000
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        let cob4 = (descobrir_letra palavra cob3 c3)
+        putStrLn("Palavra: " ++ cob4 ++ " ||| " ++ palavra)
+        threadDelay 2000000
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        let cob5 = (descobrir_letra palavra cob4 c4)
+        putStrLn("Palavra: " ++ cob5 ++ " ||| " ++ palavra)
+        threadDelay 2000000
+        clearScreen
+        putStrLn(">> Rodada Final:")
+        putStrLn("Dica: " ++ dica)
+        putStrLn("Palavra: " ++ cob5 ++ " ||| " ++ palavra)
+        putStrLn("Por favor, digite a palavra corretamente para ganhar 1 MILHÃO DE REAIS!!!")
+        pl <- getLine
+        if (palavra_correta palavra pl) then do
+            putStrLn "***********************************************************************"
+            putStrLn "************ PARABÉNS, VOCÊ GANHOU 1 MILHÃO DE REAIS ******************"
+            putStrLn "***********************************************************************"
+            threadDelay 3000000
+        else do
+            putStrLn("Você perdeu...")
+            threadDelay 3000000
     | otherwise = do
         clearScreen
-        rodada z n dica palavra (cobrir_palavra palavra) "" tem rod jogas jogasT (sortear_numero_roleta 1 21)
+        rodada z n dica palavra (cobrir_palavra palavra) "" tem rod jogas jogasT (sortear_numero_roleta 1 24)
 
 rodada :: Int -> Int -> String -> String -> String -> String -> Int -> Int -> Jogadores -> Jogadores -> Int -> IO()
 rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
@@ -184,7 +273,6 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
         putStrLn("Palavra: " ++ coberta ++ " ||| " ++ palavra)
         putStrLn("Letra(s) já escolhida(s): " ++ escolhidas)
         putStrLn("Girando a roleta...")
-        putStrLn(show(sortea))
         let rol = rodar_roleta 1 (sortea) roleta
         threadDelay 2000000
         if (rol == "Perdeu tudo") then do
@@ -192,31 +280,35 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
             threadDelay 2000000
             clearScreen
             if (z == 1) then do
-                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 21)
+                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
             else if (z == 2) then do
-                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 21)
+                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
             else do
-                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 21)
+                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
         else if (rol == "Passou a vez") then do
             putStrLn(">> Passou a vez!")
             threadDelay 2000000
             clearScreen
-            rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 21)
+            rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 24)
         else do
             putStrLn(">> Valendo " ++ rol ++ " pontos por letra. " ++ (pegar_nome jogas 1 z) ++ " digite a palavra corretamente: ")
             le <- getLine
             if ((length le) == (length palavra)) then do
                 if ((palavra_correta le palavra)) then do
+                    putStrLn("Parabéns, você acertou a palavra!")
+                    threadDelay 2000000
                     if (z == 1) then do
-                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) + ((read rol :: Int) * qnt_coberta coberta))), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 21)
+                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) + ((read rol :: Int) * qnt_coberta coberta))), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
                     else if (z == 2) then do
-                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) * qnt_coberta coberta))), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 21)
+                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) * qnt_coberta coberta))), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
                     else do
-                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) + ((read rol :: Int) * qnt_coberta coberta)))] (sortear_numero_roleta 1 21)
+                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) + ((read rol :: Int) * qnt_coberta coberta)))] (sortear_numero_roleta 1 24)
                 else do
-                    rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 21)
+                    rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 24)
             else do 
-                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 21)
+                putStrLn("Que pena, você errou a palavra...")
+                threadDelay 2000000
+                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 24)
     | otherwise = do
         let z = if (i > 3) then 1 else i
         putStrLn(">> Rodada N°: " ++ show(n))
@@ -226,7 +318,6 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
         putStrLn("Palavra: " ++ coberta ++ " ||| " ++ palavra)
         putStrLn("Letra(s) já escolhida(s): " ++ escolhidas)
         putStrLn("Girando a roleta...")
-        putStrLn(show(sortea))
         let rol = rodar_roleta 1 (sortea) roleta
         threadDelay 2000000
         if (rol == "Perdeu tudo") then do
@@ -234,16 +325,16 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
             threadDelay 2000000
             clearScreen
             if (z == 1) then do
-                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 21)
+                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
             else if (z == 2) then do
-                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 21)
+                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
             else do
-                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 21)
+                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
         else if (rol == "Passou a vez") then do
             putStrLn(">> Passou a vez!")
             threadDelay 2000000
             clearScreen
-            rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 21)
+            rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 24)
         else do
             putStrLn(">> Valendo " ++ rol ++ " pontos por letra, " ++ pegar_nome jogas 1 z ++ " digite uma letra: ")
             le <- getLine
@@ -251,18 +342,22 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
                 clearScreen
                 letraEscolhida
                 clearScreen
-                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 21)
+                rodada (z+1) n dica palavra coberta escolhidas tem rod jogas jogasT (sortear_numero_roleta 1 24)
             else if(existe_letra palavra (toUpper (head le))) then do
                 clearScreen
+                putStrLn("Parabéns, você acertou " ++ show(qnt_letra palavra (toUpper (head le))) ++ " letras e ganhou " ++ show((qnt_letra palavra (toUpper (head le))) + (read rol :: Int)) ++ " pontos")
+                threadDelay 2000000
                 if (z == 1) then do
-                    rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head le)))))), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 21)
+                    rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head le)))))), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
                 else if (z == 2) then do
-                    rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head le)))))), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 21)
+                    rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head le)))))), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
                 else do
-                    rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head le))))))] (sortear_numero_roleta 1 21)
+                    rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head le))))))] (sortear_numero_roleta 1 24)
             else do
                 clearScreen
-                rodada (z+1) n dica palavra coberta (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas jogasT (sortear_numero_roleta 1 21)
+                putStrLn("Que pena, você não acertou nenhuma letra...")
+                threadDelay 2000000
+                rodada (z+1) n dica palavra coberta (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas jogasT (sortear_numero_roleta 1 24)
 
 palavra_correta :: String -> String -> Bool
 palavra_correta [] [] = True
@@ -298,4 +393,3 @@ main = do
     clearScreen
     telaInicial
     case1
-    threadDelay 2000000
