@@ -14,6 +14,7 @@ module Util (
 import Control.Concurrent
 import Control.Monad
 import Data.Char
+import System.Console.ANSI
 
 opcaoInvalidaPt :: IO()
 opcaoInvalidaPt = do
@@ -41,6 +42,7 @@ regras = do
     inp <- getLine
     when (map toUpper inp /= "SAIR") $ do
         regras
+        clearScreen
 
 telaInicial :: IO()
 telaInicial = do
