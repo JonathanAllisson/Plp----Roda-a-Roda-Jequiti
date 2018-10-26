@@ -122,20 +122,20 @@ sortear_numero z n tem rod jogas = do
     handle <- openFile "palavrasedicas.txt" ReadMode
     if (tem == 1) 
         then do
-            num <- randomRIO (1::Int, 20)
+            num <- randomRIO (1::Int, 40)
             if (mod num 2 == 0) then
                 ler_rodada z 1 (num-1) handle n tem rod jogas
             else
                 ler_rodada z 1 num handle n tem rod jogas
     else if (tem == 2) 
         then do
-            num <- randomRIO (21::Int, 40)
+            num <- randomRIO (41::Int, 80)
             if (mod num 2 == 0) then
                 ler_rodada z 1 (num-1) handle n tem rod jogas
             else
                 ler_rodada z 1 num handle n tem rod jogas
     else do
-        num <- randomRIO (41::Int, 60)
+        num <- randomRIO (81::Int, 120)
         if (mod num 2 == 0) then
             ler_rodada z 1 (num-1) handle n tem rod jogas
         else
