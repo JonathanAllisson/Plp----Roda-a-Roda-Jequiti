@@ -318,9 +318,9 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
                 let et = (read (pegar_item 1 2 bot) :: Bool)
                 if(et) then do
                     if (z == 1) then do
-                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) * ((read rol :: Int) + qnt_coberta coberta))), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
+                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) + ((read rol :: Int) * qnt_coberta coberta))), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
                     else if (z == 2) then do
-                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) + qnt_coberta coberta))), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
+                        rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) * qnt_coberta coberta))), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
                     else do
                         rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) + ((read rol :: Int) * qnt_coberta coberta)))] (sortear_numero_roleta 1 24)
                 else do 
@@ -335,9 +335,9 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
                     if ((palavra_correta le palavra)) then do
                         threadDelay 2000000
                         if (z == 1) then do
-                            rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) * ((read rol :: Int) + qnt_coberta coberta))), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
+                            rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) + ((read rol :: Int) * qnt_coberta coberta))), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
                         else if (z == 2) then do
-                            rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) * ((read rol :: Int) + qnt_coberta coberta))), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
+                            rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) * qnt_coberta coberta))), ((pegar_nome jogasT 1 3), 0)] (sortear_numero_roleta 1 24)
                         else do
                             rodada z n dica palavra palavra "" tem rod jogas [((pegar_nome jogasT 1 1), 0), ((pegar_nome jogasT 1 2), 0), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) + ((read rol :: Int) * qnt_coberta coberta)))] (sortear_numero_roleta 1 24)
                     else do
@@ -391,11 +391,11 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
                     putStrLn("Parabéns, você acertou " ++ show(qnt_letra palavra (toUpper (head lel))) ++ " letras e ganhou " ++ show((qnt_letra palavra (toUpper (head lel))) * (read rol :: Int)) ++ " pontos")
                     threadDelay 2000000
                     if (z == 1) then do
-                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head lel))) (escolhidas ++ [(toUpper (head lel))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) * ((read rol :: Int) + (qnt_letra palavra (toUpper (head lel)))))), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
+                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head lel))) (escolhidas ++ [(toUpper (head lel))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head lel)))))), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
                     else if (z == 2) then do
-                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head lel))) (escolhidas ++ [(toUpper (head lel))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) + (qnt_letra palavra (toUpper (head lel)))))), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
+                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head lel))) (escolhidas ++ [(toUpper (head lel))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head lel)))))), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
                     else do
-                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head lel))) (escolhidas ++ [(toUpper (head lel))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) * ((read rol :: Int) + (qnt_letra palavra (toUpper (head lel))))))] (sortear_numero_roleta 1 24)
+                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head lel))) (escolhidas ++ [(toUpper (head lel))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head lel))))))] (sortear_numero_roleta 1 24)
                 else do
                     clearScreen
                     putStrLn("Que pena, você não acertou nenhuma letra...")
@@ -414,11 +414,11 @@ rodada i n dica palavra coberta escolhidas tem rod jogas jogasT sortea
                     putStrLn("Parabéns, você acertou " ++ show(qnt_letra palavra (toUpper (head le))) ++ " letras e ganhou " ++ show((qnt_letra palavra (toUpper (head le))) * (read rol :: Int)) ++ " pontos")
                     threadDelay 2000000
                     if (z == 1) then do
-                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) + ((read rol :: Int) + (qnt_letra palavra (toUpper (head le)))))), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
+                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), ((pegar_pontuacao jogasT 1 1) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head le)))))), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
                     else if (z == 2) then do
-                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) + (qnt_letra palavra (toUpper (head le)))))), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
+                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), ((pegar_pontuacao jogasT 1 2) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head le)))))), ((pegar_nome jogasT 1 3), (pegar_pontuacao jogasT 1 3))] (sortear_numero_roleta 1 24)
                     else do
-                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) + ((read rol :: Int) + (qnt_letra palavra (toUpper (head le))))))] (sortear_numero_roleta 1 24)
+                        rodada z n dica palavra (descobrir_letra palavra coberta (toUpper (head le))) (escolhidas ++ [(toUpper (head le))] ++ " ") tem rod jogas [((pegar_nome jogasT 1 1), (pegar_pontuacao jogasT 1 1)), ((pegar_nome jogasT 1 2), (pegar_pontuacao jogasT 1 2)), ((pegar_nome jogasT 1 3), ((pegar_pontuacao jogasT 1 3) + ((read rol :: Int) * (qnt_letra palavra (toUpper (head le))))))] (sortear_numero_roleta 1 24)
                 else do
                     clearScreen
                     putStrLn("Que pena, você não acertou nenhuma letra...")
