@@ -175,7 +175,7 @@ rodadas z n dica palavra tem rod jogas jogasT
         let z = maximum [(pegar_pontuacao jogas 1 1), (pegar_pontuacao jogas 1 2), (pegar_pontuacao jogas 1 3)]
         let sortea = (sortear_numero_roleta 1 24)
         let coberta = cobrir_palavra palavra
-        putStrLn("Parabéns: " ++ (pegar_nome jogas 1 z) ++ " você chegou na rodada final")
+        putStrLn("Parabéns: " ++ (pegar_nome jogas 1 (pegar_numero jogas 1 z)) ++ " você chegou na rodada final")
         threadDelay 2000000
         clearScreen
         if((pegar_nome jogas 1 (pegar_numero jogas 1 z)) == "Bot 01" || (pegar_nome jogas 1 (pegar_numero jogas 1 z)) == "Bot 02") then do
