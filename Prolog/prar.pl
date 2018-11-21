@@ -13,9 +13,9 @@ caso1 :-
     limpaTela,
     menus:telaDeOpcoes,
     lerString(Op)->( 
-        Op == "2", limpaTela, menus:regras;
+        Op == "2", limpaTela, menus:regras, caso1;
         Op == "1", caso2;
-        menus:opcaoInvalidaPt, caso1
+        menus: opcaoInvalidaPt, caso1
         ).
     
 caso2 :-
@@ -36,6 +36,13 @@ caso3() :-
         ).
     
 caso4():-
+    limpaTela,
+    menus: comecar,
+    lerString(QtdJogadores),
+    atom_number(QtdJogadores, Y)->(
+        Y >= 1, Y =< 3, assert(rodadas(QtdJogadores));
+        menus:opcaoInvalidaPt, caso4()
+        ),
     writeln("OKKK"),
     rodadas(F),
     tema(G),
