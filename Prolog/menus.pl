@@ -22,8 +22,7 @@ regras :-
     writeln(">> Digite a palavra sair para voltar."),
     read_line_to_string(user_input, X),
     string_upper(X, UpperCase)->(
-        UpperCase \= "SAIR",opcaoInvalidaPt, limpaTela, regras;
-        UpperCase == "SAIR",caso1
+        UpperCase \= "SAIR", regras     
     ).
     
 

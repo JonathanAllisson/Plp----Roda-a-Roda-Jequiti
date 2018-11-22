@@ -4,6 +4,7 @@
 
 :- dynamic(tema/1).
 :- dynamic(rodadas/1).
+:- dynamic(qtdJogadores/1).
 
 limpaTela() :-
 	shell("clear"),
@@ -13,9 +14,10 @@ caso1 :-
     limpaTela,
     menus:telaDeOpcoes,
     lerString(Op)->( 
-        Op == "2", limpaTela, menus:regras, caso1;
+        Op == "2", limpaTela, menus:regras;
         Op == "1", caso2;
-        menus: opcaoInvalidaPt, caso1
+        Op \= "1", Op \= "2", limpaTela, menus: opcaoInvalidaPt, caso1;
+        caso1
         ).
     
 caso2 :-
@@ -40,15 +42,14 @@ caso4():-
     menus: comecar,
     lerString(QtdJogadores),
     atom_number(QtdJogadores, Y)->(
-        Y >= 1, Y =< 3, assert(rodadas(QtdJogadores));
+        Y >= 1, Y =< 3, assert(qtdJogadores(QtdJogadores));
         menus:opcaoInvalidaPt, caso4()
         ),
-    writeln("OKKK"),
-    rodadas(F),
-    tema(G),
-    writeln(F),
-    writeln(G).
+    comecar.
     
+comecar():-
+    writeln("check point").
+
 
 main :-
     limpaTela,
