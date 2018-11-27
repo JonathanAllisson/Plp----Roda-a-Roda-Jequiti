@@ -1,4 +1,5 @@
 :- module(menus, []).
+:- use_module(main).
 
 opcaoInvalida :-
     writeln("***********************************************************************"),
@@ -22,7 +23,7 @@ regras :-
     writeln(">> Digite a palavra sair para voltar."),
     read_line_to_string(user_input, X),
     string_upper(X, UpperCase)->(
-        UpperCase \= "SAIR", regras     
+        UpperCase \= "SAIR", main: limpaTela, opcaoInvalida, main: limpaTela, regras
     ).
     
 
