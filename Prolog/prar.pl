@@ -53,37 +53,39 @@ umJogador(J, J2, J3):-
     lerString(Y),
     insereInicio(Y, J, R1),
     insereInicio(0, R1, R2),
-    insereInicio("Bot 01", J2, R3),
-    insereInicio("Bot 02", J3, R4),
-    comecar(R2, R3, R4).
+    insereInicio("Bot 01", J2, T1),
+    insereInicio(0, T1, T2),
+    insereInicio("Bot 02", J3, P1),
+    insereInicio(0, P1, P2),
+    comecar(R2, T2, P2).
     
 doisJogadores(J, J2, J3):-
     writeln("Digite seu nome: "),
     lerString(Y),
-    J.append(Y),
-    J.append(0),
+    insereInicio(Y, J, R1),
+    insereInicio(0, R1, R2),
     writeln("Digite seu nome: "),
     lerString(Z),
-    J2.append(Z),
-    J2.append(0),
-    J3.append("Bot 02"),
-    J3.append(0),
-    comecar(J, J2, J3).
+    insereInicio(Z, J2, K1),
+    insereInicio(0, K1, K2),
+    insereInicio("Bot 01", J3, T1),
+    insereInicio(0, T1, T2),
+    comecar(R2, K2, T2).
     
 tresJogadores(J, J2, J3):-
     writeln("Digite seu nome: "),
     lerString(Y),
-    J.append(Y),
-    J.append(0),
+    insereInicio(Y, J, R1),
+    insereInicio(0, R1, R2),
     writeln("Digite seu nome: "),
     lerString(Z),
-    J2.append(Z),
-    J2.append(0),
+    insereInicio(Z, J2, K1),
+    insereInicio(0, K1, K2),
     writeln("Digite seu nome: "),
-    lerString(X),
-    J3.append(X),
-    J3.append(0),
-    comecar(J, J2, J3).
+    lerString(N),
+    insereInicio(N, J3, F1),
+    insereInicio(0, F1, F2),
+    comecar(R2, K2, F2).
     
 comecar([H|T], [H2|T2], [H3|T3]):-
     writeln(H),
