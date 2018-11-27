@@ -38,35 +38,27 @@ caso3() :-
 caso4():-
     limpaTela,
     menus: comecar,
-    lerString(Jogadores)->(
-        Jogadores == "1", umJogador;
-        Jogadores == "2", doisJogadores([],[],[]);
-        Jogadores == "3", tresJogadores([],[],[]);
-        Jogadores \= "1", Jogadores \= "2", Jogadores \= "3", limpaTela, menus:opcaoInvalida,caso4
-        ).
-    
+    lerString(Y),
+    cadastraJogadores(Y, [], [], []).    
 
     
-umJogador :-
-    limpaTela,
+cadastraJogadores("1", J, J2, J3):-
     writeln("Digite seu nome: "),
-    lerString(Nome),
-    insereInicio(Nome, [], Aux01),
-    insereInicio(0, Aux01, Jogador01),
-    insereInicio("Bot 01", [], Aux02),
-    insereInicio(0, Aux02, Jogador02),
-    insereInicio("Bot 02", [], Aux03),
-    insereInicio(0, Aux03, Jogador03),
-    comecar(Jogador01, Jogador02, Jogador03).
-    
-doisJogadores(J, J2, J3):-
-    limpaTela,
-    writeln("Jogador 01, digite seu nome: "),
     lerString(Y),
     insereInicio(Y, J, R1),
     insereInicio(0, R1, R2),
-    limpaTela,
-    writeln("Jogador 02, digite seu nome: "),
+    insereInicio("Bot 01", J2, T1),
+    insereInicio(0, T1, T2),
+    insereInicio("Bot 02", J3, P1),
+    insereInicio(0, P1, P2),
+    comecar(R2, T2, P2).
+    
+cadastraJogadores("2", J, J2, J3):-
+    writeln("Digite seu nome: "),
+    lerString(Y),
+    insereInicio(Y, J, R1),
+    insereInicio(0, R1, R2),
+    writeln("Digite seu nome: "),
     lerString(Z),
     insereInicio(Z, J2, K1),
     insereInicio(0, K1, K2),
@@ -74,23 +66,25 @@ doisJogadores(J, J2, J3):-
     insereInicio(0, T1, T2),
     comecar(R2, K2, T2).
     
-tresJogadores(J, J2, J3):-
-    limpaTela,
-    writeln("Jogador 01, digite seu nome: "),
+cadastraJogadores("3", J, J2, J3):-
+    writeln("Digite seu nome: "),
     lerString(Y),
     insereInicio(Y, J, R1),
     insereInicio(0, R1, R2),
-    limpaTela,
-    writeln("Jogador 02, digite seu nome: "),
+    writeln("Digite seu nome: "),
     lerString(Z),
     insereInicio(Z, J2, K1),
     insereInicio(0, K1, K2),
-    limpaTela,
-    writeln("Jogador 03, digite seu nome: "),
+    writeln("Digite seu nome: "),
     lerString(N),
     insereInicio(N, J3, F1),
     insereInicio(0, F1, F2),
     comecar(R2, K2, F2).
+
+cadastraJogadores(_, _, _, _) :-
+    limpaTela,
+    menus:opcaoInvalida,
+    caso4.
     
 comecar([H|T], [H2|T2], [H3|T3]):-
     writeln(H),
