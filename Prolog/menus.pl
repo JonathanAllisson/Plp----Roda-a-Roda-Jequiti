@@ -1,5 +1,7 @@
 :- module(menus, []).
-:- use_module(main).
+
+limpaTela() :-
+	shell("clear").
 
 opcaoInvalida :-
     writeln("***********************************************************************"),
@@ -23,7 +25,7 @@ regras :-
     writeln(">> Digite a palavra sair para voltar."),
     read_line_to_string(user_input, X),
     string_upper(X, UpperCase)->(
-        UpperCase \= "SAIR", main: limpaTela, opcaoInvalida, main: limpaTela, regras
+        UpperCase \= "SAIR", limpaTela, opcaoInvalida, limpaTela, regras
     ).
     
 
@@ -87,3 +89,8 @@ comecar :-
     writeln("***********************************************************************"),
     writeln("\t"),
     writeln(">> Qual a sua escolha?").
+
+pontuacaoGeral :-
+    writeln("***********************************************************************"),
+    writeln("------------------------ Pontuação Geral ------------------------------"),
+    writeln("***********************************************************************").
