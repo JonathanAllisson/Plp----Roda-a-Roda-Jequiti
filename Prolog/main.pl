@@ -1,10 +1,29 @@
 :- module(main, [limpaTela/0]).
 :- initialization(main).
 :- use_module(menus).
-:- dynamic(tema/1).
+:- dynamic palavra/3,(tema/1).
 :- dynamic(rodadas/1).
 :- dynamic(qtdJogadores/1).
+% loucura minha aki, Gasparsa
+setup_palavra :-
+    reconsult('arquivo.pl').
+limitaPeloTema(Tema, Resultado):-
+    setup_palavra,
+    findall([Dica,Palavra, Tema], palavra(Dica,Palavra, Tema), Resultado).
 
+escolhePalvra(Palavras, RandomPalavra):-
+    length(Palavras, Size),
+    random(0, Size, RandomIndex),
+    nth0(RandomIndex, Palavras, RandomPalavra).
+
+pegaTexto(Word, Texto):-
+    nth0(0, Word, Texto).
+
+palavraRandom:-  
+    limitaPeloTema(Tema, Resultado),
+    escolhePalvra(Resultado, RandomPalavra),
+    pegaTexto(RandomPalavra, Texto).
+%%%-----------------------------------------------
 limpaTela() :-
 	shell("clear").
 
@@ -93,7 +112,6 @@ comecar([H|T], [H2|T2], [H3|T3]):-
     writeln(T2),
     writeln(H3),
     writeln(T3).
-    
 insereInicio(H, L, [H|L]):- !.
 
 
