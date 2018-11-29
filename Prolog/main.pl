@@ -17,6 +17,10 @@ read_file(Stream,[X|L]) :-
     read(Stream,X),
     read_file(Stream,L).
 
+palavra(W) :-
+    arquivo(L),
+    random_member(W, L).
+
 lista(X) :- X = [50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000,"Perdeu tudo","Perdeu tudo","Passou a vez","Passou a vez","Passou a vez"].
 
 roleta(Y):-
@@ -112,9 +116,12 @@ cadastraJogadores(_) :-
 rodadas(Jogador01, Jogador02, Jogador03, NumeroRodada) :-
     qtdRodadas(X) ->
         (NumeroRodada > X, rodadaFinal;
+        palavra(Palavra),
         pegarPontuacaoNome(Jogador01, _, NJ1),
         pegarPontuacaoNome(Jogador02, _, NJ2),
         pegarPontuacaoNome(Jogador03, _, NJ3),
+        writeln(Palavra),
+        sleep(10),
         jogadas(1, [NJ1, 0], [NJ2, 0], [NJ3, 0], NumeroRodada, "jjj", "j j j", 0, 0, 0),
         write(">> Rodada N°: "), writeln(NumeroRodada),
         menus: pontuacaoGeral,
@@ -143,7 +150,8 @@ jogadas(Vez, [H1|[HT1|_]], [H2|[HT2|_]], [H3|[HT3|_]], NumeroRodada, PalavraCobe
     write("Palavra: "), writeln(PalavraCoberta),
     writeln("Letra(s) já escolhida(s): "),
     writeln("Girando a roleta..."),
-    C is 4,
+    string_chars("$####$", Chars),
+    qntCoberta(Chars, C),
     sleep(2),
     roleta(R),
     nomeDaVez(Vez, H1, H2, H3, N) -> (
@@ -195,13 +203,14 @@ insereInicio(H, L, [H|L]).
 
 cobre(' ', " ").
 cobre(_, "#").
+
 cobrirPalavra([], []).
 cobrirPalavra([H|T], [R|T2]):-
     cobre(H, R), cobrirPalavra(T, T2).
 
-qnt_coberta([], 0).
-qnt_coberta([H|T], K):-
-    qnt_coberta(T, Q) -> (
+qntCoberta([], 0).
+qntCoberta([H|T], K):-
+    qntCoberta(T, Q) -> (
         H == '#', K is Q + 1;
         K is Q).
 
