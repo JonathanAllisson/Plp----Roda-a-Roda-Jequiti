@@ -193,11 +193,17 @@ pegarPontuacaoNome([H|[Ht|_]], H, Ht).
 
 insereInicio(H, L, [H|L]).
 
-cobre(" ", " ").
+cobre(' ', " ").
 cobre(_, "#").
 cobrirPalavra([], []).
 cobrirPalavra([H|T], [R|T2]):-
     cobre(H, R), cobrirPalavra(T, T2).
+
+qnt_coberta([], 0).
+qnt_coberta([H|T], K):-
+    qnt_coberta(T, Q) -> (
+        H == '#', K is Q + 1;
+        K is Q).
 
 main :-
     menus: limpaTela,
