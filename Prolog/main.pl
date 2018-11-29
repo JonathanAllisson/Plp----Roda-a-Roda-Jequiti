@@ -144,13 +144,14 @@ jogadas(Vez, [H1|[HT1|_]], [H2|[HT2|_]], [H3|[HT3|_]], NumeroRodada, PalavraCobe
     writeln("Letra(s) já escolhida(s): "),
     writeln("Girando a roleta..."),
     C is 4,
-    sleep(2) -> (
+    sleep(2),
+    roleta(R),
+    nomeDaVez(Vez, H1, H2, H3, N) -> (
         C < 3,
         C > 0,
-        write("MENOR Q 3");
-        C > 3,
-        roleta(R),
-        nomeDaVez(Vez, H1, H2, H3, N) -> (
+        write("Valendo "), write(R), write(" pontos por letra restante, "), write(N), writeln(" digite a palavra corretamente:")
+        ;
+        C > 3 -> (
             R == "Perdeu tudo",
             writeln("Perdeu tudo..."),
             zeraPontuacao(Vez, HT1, HT2, HT3, NP1, NP2, NP3), 
