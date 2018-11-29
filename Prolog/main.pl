@@ -193,6 +193,12 @@ pegarPontuacaoNome([H|[Ht|_]], H, Ht).
 
 insereInicio(H, L, [H|L]).
 
+cobre(" ", " ").
+cobre(_, "#").
+cobrirPalavra([], []).
+cobrirPalavra([H|T], [R|T2]):-
+    cobre(H, R), cobrirPalavra(T, T2).
+
 main :-
     menus: limpaTela,
     menus:telaInicial,
