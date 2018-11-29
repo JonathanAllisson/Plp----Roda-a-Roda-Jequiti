@@ -4,28 +4,32 @@
 :- dynamic(qtdRodadas/1).
 :- dynamic(qtdJogadores/1).
 
-/*loucura minha aki, Gasparsa
-setup_palavra :-
-    reconsult('arquivo.pl').
-limitaPeloTema(Tema, Resultado):-
-    setup_palavra,
-    findall([Dica,Palavra, Tema], palavra(Dica,Palavra, Tema), Resultado).
+arquivo :-
+    open('myFile.txt', read, Str),
+    read_file(Str,Lines),
+    close(Str),
+    write(Lines), nl.
 
-escolhePalvra(Palavras, RandomPalavra):-
-    length(Palavras, Size),
-    random(0, Size, RandomIndex),
-    nth0(RandomIndex, Palavras, RandomPalavra).
+read_file(Stream,[]) :-
+    at_end_of_stream(Stream).
 
-pegaTexto(Word, Texto):-
-    nth0(0, Word, Texto).
+read_file(Stream,[X|L]) :-
+    \+ at_end_of_stream(Stream),
+    read(Stream,X),
+    read_file(Stream,L).
 
-palavraRandom:-  
-    limitaPeloTema(Tema, Resultado),
-    escolhePalvra(Resultado, RandomPalavra),
-    pegaTexto(RandomPalavra, Texto).
-*/
-
+lista(X) :- X = [50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000,"Perdeu tudo","Perdeu tudo","Passou a vez","Passou a vez","Passou a vez"].
+roleta(Y):-
+    lista(X),
+    random_member(Y, X).
 caso1 :-
+    lista(X),
+    random_between(0, 5, J),
+    writeln(J),
+    nth0(J,X,R),
+    writeln(R),
+    writeln(X),
+    sleep(3),
     menus: limpaTela,
     menus:telaDeOpcoes,
     lerString(Op) -> ( 
@@ -97,7 +101,7 @@ cadastraJogadores("3"):-
     writeln("Jogador 02, digite seu nome: "),
     lerString(Nome02),
     insereInicio(Nome02, [], R2),
-    insereInicio(0, R2,
+    insereInicio(0,[], R2),
     insereInicio(Nome02, [], R2),
     insereInicio(0, R2, Jogador02),
     menus: limpaTela,
@@ -118,7 +122,7 @@ rodadas(Jogador01, Jogador02, Jogador03, NumeroRodada) :-
     pegarPontuacaoNome(Jogador01, L1, NJ1),
     pegarPontuacaoNome(Jogador02, L2, NJ2),
     pegarPontuacaoNome(Jogador03, L3, NJ3),
-    jogadas(1, [NJ1, 0], [NJ2, 0], [NJ3, 0], NumeroRodada, "jjj", "j j j", )
+    jogadas(1, [NJ1, 0], [NJ2, 0], [NJ3, 0], NumeroRodada, "jjj", "j j j", ),
     write(">> Rodada N°: "), writeln(NumeroRodada),
     menus: pontuacaoGeral,
     pegarPontuacaoNome(Jogador01, P1, N1),
