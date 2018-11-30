@@ -2,22 +2,9 @@
 :- use_module(menus).
 :- dynamic tema/1, qtdRodadas/1, qtdJogadores/1, nome01/1, pontos01/1, nome02/1, pontos02/1, nome03/1, pontos03/1, pontosT01/1, pontosT02/1, pontosT03/1.
 
-arquivo_Geografia(Lines) :-
-    open('geografia.txt', read, Str),
+arquivo(Lines) :-
+    open('Palavras.txt', read, Str),
     read_file(Str,Lines),
-    writeln(Lines),
-    close(Str).
-
-arquivo_Marcas(Lines) :-
-    open('marcas.txt', read, Str),
-    read_file(Str,Lines),
-    writeln(Lines),
-    close(Str).
-
-arquivo_Filmes(Lines) :-
-    open('filmes.txt', read, Str),
-    read_file(Str,Lines),
-    writeln(Lines),
     close(Str).
 
 read_file(Stream,[]) :-
@@ -30,12 +17,13 @@ read_file(Stream,[X|L]) :-
  
 palavraDica(Palavra, Dica) :-
     tema(T) -> ( 
-        T == "Geografia", arquivo_Geografia(L);
-        T == "Marcas", arquivo_Marcas(L);
-        T == "Filmes", arquivo_Filmes(L)
+        T == "Geografia", I is 0, F is 20;
+        T == "Marcas", I is 20, F is 40;
+        I is 40, F is 60
         ),
-    random(0, 20, R),
-    K is (R + 20),
+    arquivo(L),
+    random(I, F, R),
+    K is (R + 60),
     itemPorIndice(0, R, L, Palavra),
     itemPorIndice(0, K, L, Dica).
 
@@ -45,7 +33,9 @@ itemPorIndice(I, N, [H|T], E) :-
         itemPorIndice(K, N, T, E)).
 
 lista(X) :- X = [50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000,"Perdeu tudo","Perdeu tudo","Passou a vez","Passou a vez","Passou a vez"].
+
 letras_bot(Y) :- Y["A","E","I","O","U"].
+
 roleta(Y):-
     lista(X),
     random_member(Y, X).
