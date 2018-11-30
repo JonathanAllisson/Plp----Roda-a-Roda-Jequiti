@@ -167,19 +167,19 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
     sleep(2),
     roleta(R),
     nomeDaVez(Vez, Nome) -> (
-        C < 4,
-        write("Valendo "), write(R), write(" pontos por letra restante, "), write(Nome), 
-        writeln(" digite a palavra corretamente:"), sleep(2);
+        R == "Perdeu tudo",
+        writeln("Perdeu tudo..."),
+        zeraPontuacao(Vez), 
+        sleep(2), 
+        jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica);
+        R == "Passou a vez",
+        writeln("Passou a vez..."),
+        sleep(2),
+        jogadas(Nvez,NumeroRodada, PalavraCoberta, Palavra, Dica);
         true -> (
-            R == "Perdeu tudo",
-            writeln("Perdeu tudo..."),
-            zeraPontuacao(Vez), 
-            sleep(2), 
-            jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica);
-            R == "Passou a vez",
-            writeln("Passou a vez..."),
-            sleep(2),
-            jogadas(Nvez,NumeroRodada, PalavraCoberta, Palavra, Dica);
+            C < 4,
+            write("Valendo "), write(R), write(" pontos por letra restante, "), write(Nome), 
+            writeln(" digite a palavra corretamente:"), sleep(2);
             write(">> Valendo "), write(R), write(" pontos por letra, "), write(Nome), writeln(" digite uma letra:"),
             lerString(Tentativa),
             string_upper(Tentativa, UTentativa),
