@@ -1,6 +1,7 @@
 :- initialization(main).
 :- use_module(menus).
-:- dynamic tema/1, qtdRodadas/1, qtdJogadores/1, nome01/1, pontos01/1, nome02/1, pontos02/1, nome03/1, pontos03/1, pontosT01/1, pontosT02/1, pontosT03/1.
+:- dynamic tema/1, qtdRodadas/1, qtdJogadores/1, nome01/1, pontos01/1, nome02/1, pontos02/1, nome03/1, pontos03/1, 
+pontosT01/1, pontosT02/1, pontosT03/1, letras/1.
 
 arquivo(Lines) :-
     open('Palavras.txt', read, Str),
@@ -131,8 +132,8 @@ rodadas(NumeroRodada) :-
         string_chars(Palavra, Chars),
         cobrirPalavra(Chars, Res),
         atomic_list_concat(Res, PalavraCoberta),
-        assert(pontosT01(0)), assert(pontosT02(0)), assert(pontosT03(0)),
-        jogadas(1, NumeroRodada, PalavraCoberta, Palavra, Dica, []),
+        assert(pontosT01(0)), assert(pontosT02(0)), assert(pontosT03(0)), assert(letras("")),
+        jogadas(1, NumeroRodada, PalavraCoberta, Palavra, Dica),
         write(">> Rodada N°: "), writeln(NumeroRodada),
         menus: pontuacaoGeral,
         nome01(Nome01), nome02(Nome02), nome03(Nome03),
@@ -144,8 +145,8 @@ rodadas(NumeroRodada) :-
         Aux is (NumeroRodada + 1),
         rodadas(Aux)).
 
-jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica, Letras) :-
-    tema(Tem),
+jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
+    tema(Tem), letras(Letras),
     menus: limpaTela,
     alteraVez(Vez, Nvez),
     nome01(Nome01), nome02(Nome02), nome03(Nome03),
@@ -166,39 +167,49 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica, Letras) :-
     sleep(2),
     roleta(R),
     nomeDaVez(Vez, Nome) -> (
-        C < 3,
-        C > 0,
-        write("Valendo "), write(R), write(" pontos por letra restante, "), write(Nome), writeln(" digite a palavra corretamente:")
-        ;
-        C > 3 -> (
+        C < 4,
+        write("Valendo "), write(R), write(" pontos por letra restante, "), write(Nome), 
+        writeln(" digite a palavra corretamente:"), sleep(2);
+        true -> (
             R == "Perdeu tudo",
             writeln("Perdeu tudo..."),
             zeraPontuacao(Vez), 
             sleep(2), 
-            jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica, Letras);
+            jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica);
             R == "Passou a vez",
             writeln("Passou a vez..."),
             sleep(2),
-            jogadas(Nvez,NumeroRodada, PalavraCoberta, Palavra, Dica, Letras);
+            jogadas(Nvez,NumeroRodada, PalavraCoberta, Palavra, Dica);
             write(">> Valendo "), write(R), write(" pontos por letra, "), write(Nome), writeln(" digite uma letra:"),
             lerString(Tentativa),
             string_upper(Tentativa, UTentativa),
             string_chars(UTentativa, [HChar|_]),
-            string_chars(Palavra, PChar),
-            contarLetras(HChar, PChar, NL) -> (
-                NL == 0, writeln("Que pena, você não acertou nenhuma letra..."),
+            string_chars(Letras, LChar),
+            contarLetras(HChar, LChar, NO) -> (
+                NO > 0, writeln("Letra já escolhida anteriormente."),
                 sleep(2),
-                jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica, Letras);
-                descobrirPalavra(HChar, PChar, PCChar, Res),
-                atomic_list_concat(Res, NPalavraCoberta),
-                NP is (R * NL),
-                alterarPontuacao(Vez, NP),
-                write("Parabens "), write(Nome), write(", você acertou "), write(NL),
-                write(" letras e ganhou "), write(NP), writeln(" pontos."),
-                sleep(2),
-                jogadas(Vez, NumeroRodada, NPalavraCoberta, Palavra, Dica, Letras)
-                )
-            )).
+                jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica);
+                string_chars(Palavra, PChar),
+                atualizarLetras(Letras, HChar),
+                contarLetras(HChar, PChar, NL) -> (
+                    NL =:= 0, writeln("Que pena, você não acertou nenhuma letra..."),
+                    sleep(2),
+                    jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica);
+                    descobrirPalavra(HChar, PChar, PCChar, Res),
+                    atomic_list_concat(Res, NPalavraCoberta),
+                    NP is (R * NL),
+                    alterarPontuacao(Vez, NP),
+                    write("Parabens "), write(Nome), write(", você acertou "), write(NL),
+                    write(" letras e ganhou "), write(NP), writeln(" pontos."),
+                    sleep(2),
+                    jogadas(Vez, NumeroRodada, NPalavraCoberta, Palavra, Dica)
+                    )
+                ))).
+
+atualizarLetras(Letras, L) :-
+    string_concat(Letras, L, N0), string_concat(N0, " ", N1),
+    retract(letras(_)),
+    assert(letras(N1)). 
 
 contarLetras(_, [], 0).
 contarLetras(L, [PH|PT], K) :-
