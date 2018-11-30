@@ -32,7 +32,7 @@ palavraDica(Palavra, Dica) :-
     tema(T) -> ( 
         T == "Geografia", arquivo_Geografia(L);
         T == "Marcas", arquivo_Marcas(L);
-        T == "Filmes", arquivo_Filmes(L);
+        T == "Filmes", arquivo_Filmes(L)
         ),
     random(0, 20, R),
     K is (R + 20),
