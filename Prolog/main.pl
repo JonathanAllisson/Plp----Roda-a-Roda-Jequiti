@@ -246,11 +246,9 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
                     write(" letras e ganhou "), write(NP), writeln(" pontos."),
                     sleep(2),
                     jogadas(Vez, NumeroRodada, NPalavraCoberta, Palavra, Dica)
-                )
-                   
+                )  
             )   
         )
-      
     ).
 
 alterarPontuacaoPermanente(Vez) :-
@@ -333,13 +331,17 @@ consoantes(HChar) :-
     lerString(Tentativa),
     string_upper(Tentativa, UTentativa),
     string_chars(UTentativa, [HChar|_]),
-    vogal(L),
-    contarLetras(HChar, L, N) -> (
-        N > 0,
-        menus: opcaoInvalida,
+    string_chars(Letras, LChar),
+    contarLetras(HChar, LChar, K) -> (
+        K \= 0, writeln("Letra já escolhida!"),
         consoantes(_);
-        N =:= 0,
-        atualizarLetras(Letras, HChar)).
+        K =:= 0, vogal(L),
+        contarLetras(HChar, L, N) -> (
+            N > 0,
+            menus: opcaoInvalida,
+            consoantes(_);
+            N =:= 0,
+            atualizarLetras(Letras, HChar))).
 
 rfmenu(PalavraCoberta, Palavra, Dica) :-
     tema(Tem), letras(Letras),
