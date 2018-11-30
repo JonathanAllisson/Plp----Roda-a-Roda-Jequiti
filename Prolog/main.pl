@@ -36,7 +36,7 @@ lista(X) :- X = [50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,
 
 vogal(X) :- X = ['A','E','I','O','U'].
 
-letras_bot(X) :- X = ["A","E","I","O","U", "M", "N", "P", "Q"].
+letras_bot(X) :- X = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"].
 
 chutar_letra(X) :-
     letras_bot(Y),
@@ -197,7 +197,7 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
                 (Nome = "Bot 01"; Nome = "Bot 02"),
                 chutar_palavra(N),
                 sleep(2) -> (
-                    N =:= 0, writeln("zzz"), sleep(1), writeln("Que pena... Você não acertou a palavra."),
+                    N =:= 0, sleep(1), writeln("Que pena... Você não acertou a palavra."),
                     sleep(2), jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica);
                     N \= 0, writeln(Palavra), sleep(1), write("Parabens, você acertou a palavra e ganhou "), write(Pon), writeln(" pontos"),
                     sleep(2),
@@ -419,8 +419,8 @@ rodadaFinal :-
     writeln("Digite a palavra correta para ganhar 1 MILHÃO DE REAIS!!!"),
     lerString(Tentativa),
     string_upper(Tentativa, UTentativa) -> (
-        Palavra = UTentativa, writeln("Parabens");
-        Palavra \= UTentativa, writeln("que pena...")).
+        Palavra = UTentativa, menus: limpaTela, menus: parabens, sleep(2);
+        Palavra \= UTentativa, writeln("Que pena... Voce errou a palavra."), sleep(2)).
 
 main :-
     menus: limpaTela,
