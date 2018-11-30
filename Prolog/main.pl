@@ -128,6 +128,7 @@ cadastraJogadores(_) :-
 rodadas(NumeroRodada) :-
     qtdRodadas(X) ->
         (NumeroRodada > X, rodadaFinal;
+        NumeroRodada < (X + 1),
         palavraDica(Palavra, Dica),
         string_chars(Palavra, Chars),
         cobrirPalavra(Chars, Res),
@@ -167,35 +168,51 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
     sleep(2),
     roleta(R),
     nomeDaVez(Vez, Nome) -> (
-        R == "Perdeu tudo",
+        R = "Perdeu tudo",
         writeln("Perdeu tudo..."),
         zeraPontuacao(Vez), 
         sleep(2), 
         jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica);
-        R == "Passou a vez",
+        R = "Passou a vez",
         writeln("Passou a vez..."),
         sleep(2),
         jogadas(Nvez,NumeroRodada, PalavraCoberta, Palavra, Dica);
-        true -> (
+        R \= "Perdeu tudo", 
+        R \= "Passou a vez" -> (
             C < 4,
             write("Valendo "), write(R), write(" pontos por letra restante, "), write(Nome), 
-            writeln(" digite a palavra corretamente:"), sleep(2);
-            write(">> Valendo "), write(R), write(" pontos por letra, "), write(Nome), writeln(" digite uma letra:"),
+            writeln(" digite a palavra corretamente:"),
+            lerString(PalavraT),
+            string_upper(PalavraT, UPalavraT) -> (
+                UPalavraT = Palavra,
+                Pon is (R * C),
+                write("Parabens, você acertou a palavra e ganhou "), write(Pon), writeln(" pontos"),
+                sleep(2),
+                alterarPontuacao(Vez, Pon),
+                alterarPontuacaoPermanente(Vez),
+                Nro is (NumeroRodada + 1),
+                rodadas(Nro);
+                UPalavraT \= Palavra,
+                writeln("Que pena... Você nãoaaa acertou a palavra."),
+                sleep(2),
+                jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica)
+            );
+            C > 3, write(">> Valendo "), write(R), write(" pontos por letra, "), write(Nome), writeln(" digite uma letra:"),
             lerString(Tentativa),
             string_upper(Tentativa, UTentativa),
             string_chars(UTentativa, [HChar|_]),
             string_chars(Letras, LChar),
             contarLetras(HChar, LChar, NO) -> (
-                NO > 0, writeln("Letra já escolhida anteriormente."),
+                NO \= 0, writeln("Letra já escolhida anteriormente."),
                 sleep(2),
                 jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica);
-                string_chars(Palavra, PChar),
+                NO =:= 0, string_chars(Palavra, PChar),
                 atualizarLetras(Letras, HChar),
                 contarLetras(HChar, PChar, NL) -> (
                     NL =:= 0, writeln("Que pena, você não acertou nenhuma letra..."),
                     sleep(2),
                     jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica);
-                    descobrirPalavra(HChar, PChar, PCChar, Res),
+                    NL \= 0, descobrirPalavra(HChar, PChar, PCChar, Res),
                     atomic_list_concat(Res, NPalavraCoberta),
                     NP is (R * NL),
                     alterarPontuacao(Vez, NP),
@@ -206,6 +223,11 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
                     )
                 ))).
 
+alterarPontuacaoPermanente(Vez) :-
+    Vez =:= 1, retract(pontosT01(X)), retract(pontos01(_)), assert(pontos01(X)),
+    Vez =:= 2, retract(pontosT02(X)), retract(pontos02(_)), assert(pontos02(X)),
+    Vez =:= 3, retract(pontosT03(X)), retract(pontos03(_)), assert(pontos03(X)).
+
 atualizarLetras(Letras, L) :-
     string_concat(Letras, L, N0), string_concat(N0, " ", N1),
     retract(letras(_)),
@@ -215,13 +237,13 @@ contarLetras(_, [], 0).
 contarLetras(L, [PH|PT], K) :-
     contarLetras(L, PT, N) -> (
         L == PH, K is (N + 1);
-        K is N).
+        L \= PH, K is N).
 
 descobrirPalavra(_, [], [], []).
 descobrirPalavra(L, [PH|PT], [PCH|PCT], [H|T]) :-
    descobrirPalavra(L, PT, PCT, T) -> (
        L == PH, H = PH;
-       H = PCH).
+       L \= PH, H = PCH).
 
 lerString(X) :-
     read_line_to_string(user_input, X).
@@ -237,27 +259,27 @@ qntCoberta([], 0).
 qntCoberta([H|T], K):-
     qntCoberta(T, Q) -> (
         H == '#', K is (Q + 1);
-        K is Q).
+        H \= '#', K is Q).
 
 alteraVez(Vez, R) :-
     Vez =:= 1, R is 2;
     Vez =:= 2, R is 3;
-    R is 1.
+    Vez =:= 3, R is 1.
 
 nomeDaVez(Vez, R) :- 
     Vez =:= 1, nome01(R);
     Vez =:= 2, nome02(R);
-    nome03(R).
+    Vez =:= 3, nome03(R).
 
 zeraPontuacao(Vez) :-
     Vez =:= 1, retract(pontosT01(_)), assert(pontosT01(0));
     Vez =:= 2, retract(pontosT02(_)), assert(pontosT02(0));
-    retract(pontosT03(_)), assert(pontosT03(0)).
+    Vez =:= 3, retract(pontosT03(_)), assert(pontosT03(0)).
 
 alterarPontuacao(Vez, N) :-
     Vez =:= 1, retract(pontosT01(P1)), K1 is (P1 + N), assert(pontosT01(K1));
     Vez =:= 2, retract(pontosT02(P2)), K2 is (P2 + N), assert(pontosT02(K2));
-    retract(pontosT03(P3)), K3 is (P3 + N), assert(pontosT03(K3)).
+    Vez =:= 3, retract(pontosT03(P3)), K3 is (P3 + N), assert(pontosT03(K3)).
 
 rodadaFinal :-
     writeln("H89SH89ASHAS").
