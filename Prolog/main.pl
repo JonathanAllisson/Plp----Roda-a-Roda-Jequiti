@@ -158,11 +158,11 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica, Letras) :-
     writeln("***********************************************************************"),
     write("Tema: "), writeln(Tem),
     write("Dica: "), writeln(Dica),
-    write("Palavra: "), writeln(PalavraCoberta),
+    write("Palavra: "), write(Palavra), write(" // "), writeln(PalavraCoberta),
     write("Letra(s) já escolhida(s): "), writeln(Letras),
     writeln("Girando a roleta..."),
-    string_chars("$####$", Chars),
-    qntCoberta(Chars, C),
+    string_chars(PalavraCoberta, PCChar),
+    qntCoberta(PCChar, C),
     sleep(2),
     roleta(R),
     nomeDaVez(Vez, Nome) -> (
@@ -181,13 +181,36 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica, Letras) :-
             sleep(2),
             jogadas(Nvez,NumeroRodada, PalavraCoberta, Palavra, Dica, Letras);
             write(">> Valendo "), write(R), write(" pontos por letra, "), write(Nome), writeln(" digite uma letra:"),
-            sleep(2),
-            alterarPontuacao(Vez, R),
-            jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica, Letras))).
+            lerString(Tentativa),
+            string_upper(Tentativa, UTentativa),
+            string_chars(UTentativa, [HChar|_]),
+            string_chars(Palavra, PChar),
+            contarLetras(HChar, PChar, NL) -> (
+                NL == 0, writeln("Que pena, você não acertou nenhuma letra..."),
+                sleep(2),
+                jogadas(Nvez, NumeroRodada, PalavraCoberta, Palavra, Dica, Letras);
+                descobrirPalavra(HChar, PChar, PCChar, Res),
+                atomic_list_concat(Res, NPalavraCoberta),
+                NP is (R * NL),
+                alterarPontuacao(Vez, NP),
+                write("Parabens "), write(Nome), write(", você acertou "), write(NL),
+                write(" letras e ganhou "), write(NP), writeln(" pontos."),
+                sleep(2),
+                jogadas(Vez, NumeroRodada, NPalavraCoberta, Palavra, Dica, Letras)
+                )
+            )).
 
-descobrirPalavra([], [], []).
+contarLetras(_, [], 0).
+contarLetras(L, [PH|PT], K) :-
+    contarLetras(L, PT, N) -> (
+        L == PH, K is (N + 1);
+        K is N).
+
+descobrirPalavra(_, [], [], []).
 descobrirPalavra(L, [PH|PT], [PCH|PCT], [H|T]) :-
-    L == PCH, H = PCH, descobrirPalavra(PT, PCT, T).
+   descobrirPalavra(L, PT, PCT, T) -> (
+       L == PH, H = PH;
+       H = PCH).
 
 lerString(X) :-
     read_line_to_string(user_input, X).
@@ -202,7 +225,7 @@ cobrirPalavra([H|T], [R|T2]):-
 qntCoberta([], 0).
 qntCoberta([H|T], K):-
     qntCoberta(T, Q) -> (
-        H == '#', K is Q + 1;
+        H == '#', K is (Q + 1);
         K is Q).
 
 alteraVez(Vez, R) :-
