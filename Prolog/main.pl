@@ -1,7 +1,6 @@
 :- initialization(main).
 :- use_module(menus).
-:- dynamic tema/1, qtdRodadas/1, qtdJogadores/1, nome01/1, pontos01/1, nome02/1, pontos02/1, nome03/1, pontos03/1, 
-pontosT01/1, pontosT02/1, pontosT03/1, letras/1.
+:- dynamic tema/1, qtdRodadas/1, qtdJogadores/1, nome01/1, pontos01/1, nome02/1, pontos02/1, nome03/1, pontos03/1, pontosT01/1, pontosT02/1, pontosT03/1, letras/1.
 
 arquivo(Lines) :-
     open('Palavras.txt', read, Str),
@@ -131,9 +130,10 @@ rodadas(NumeroRodada) :-
         NumeroRodada < (X + 1),
         palavraDica(Palavra, Dica),
         string_chars(Palavra, Chars),
+        assert(pontosT01(0)), assert(pontosT02(0)), assert(pontosT03(0)),
         cobrirPalavra(Chars, Res),
         atomic_list_concat(Res, PalavraCoberta),
-        assert(pontosT01(0)), assert(pontosT02(0)), assert(pontosT03(0)), assert(letras("")),
+        assert(letras("")),
         jogadas(1, NumeroRodada, PalavraCoberta, Palavra, Dica),
         write(">> Rodada N°: "), writeln(NumeroRodada),
         menus: pontuacaoGeral,
@@ -142,7 +142,7 @@ rodadas(NumeroRodada) :-
         write("Pontuação do jogador(a) "), write(Nome01), write(": "), writeln(P1),
         write("Pontuação do jogador(a) "), write(Nome02), write(": "), writeln(P2),
         write("Pontuação do jogador(a) "), write(Nome03), write(": "), writeln(P3), 
-        sleep(1),
+        sleep(5),
         Aux is (NumeroRodada + 1),
         rodadas(Aux)).
 
@@ -190,8 +190,8 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
                 sleep(2),
                 alterarPontuacao(Vez, Pon),
                 alterarPontuacaoPermanente(Vez),
-                Nro is (NumeroRodada + 1),
-                rodadas(Nro);
+                writeln("CHECKJ"),
+                sleep(2);
                 UPalavraT \= Palavra,
                 writeln("Que pena... Você nãoaaa acertou a palavra."),
                 sleep(2),
@@ -223,10 +223,10 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
                     )
                 ))).
 
-alterarPontuacaoPermanente(Vez) :-
-    Vez =:= 1, retract(pontosT01(X)), retract(pontos01(_)), assert(pontos01(X)),
-    Vez =:= 2, retract(pontosT02(X)), retract(pontos02(_)), assert(pontos02(X)),
-    Vez =:= 3, retract(pontosT03(X)), retract(pontos03(_)), assert(pontos03(X)).
+alterarPontuacaoPermanente(V) :-
+    V =:= 1, retract(pontos01(_)), assert(pontos01(10)),
+    V =:= 2, retract(pontos02(_)), assert(pontos02(20)),
+    V =:= 3, retract(pontos03(_)), assert(pontos03(30)).
 
 atualizarLetras(Letras, L) :-
     string_concat(Letras, L, N0), string_concat(N0, " ", N1),
