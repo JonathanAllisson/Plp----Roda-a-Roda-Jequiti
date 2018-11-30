@@ -1,6 +1,6 @@
 :- initialization(main).
 :- use_module(menus).
-:- dynamic tema/1, qtdRodadas/1, qtdJogadores/1, nome01/1, pontos01/1, nome02/1, pontos02/1, nome03/1, pontos03/1, pontosT01/1, pontosT02/1, pontosT03/1, letras/1.
+:- dynamic tema/1, qtdRodadas/1, qtdJogadores/1, nome01/1, pontos1/1, nome02/1, pontos2/1, nome03/1, pontos3/1, pontosT01/1, pontosT02/1, pontosT03/1, letras/1.
 
 arquivo(Lines) :-
     open('Palavras.txt', read, Str),
@@ -79,11 +79,11 @@ cadastraJogadores("1") :-
     writeln("Digite seu nome: "),
     lerString(Nome),
     assert(nome01(Nome)),
-    assert(pontos01(0)),
+    assert(pontos1(0)),
     assert(nome02("Bot 01")),
-    assert(pontos02(0)), 
+    assert(pontos2(0)), 
     assert(nome03("Bot 02")),
-    assert(pontos03(0)),
+    assert(pontos3(0)),
     rodadas(1).
     
 cadastraJogadores("2"):-
@@ -94,11 +94,11 @@ cadastraJogadores("2"):-
     writeln("Jogador 02, digite seu nome: "),
     lerString(Nome02),
     assert(nome01(Nome01)),
-    assert(pontos01(0)), 
+    assert(pontos1(0)), 
     assert(nome02(Nome02)),
-    assert(pontos02(0)), 
+    assert(pontos2(0)), 
     assert(nome03("Bot 02")),
-    assert(pontos03(0)),
+    assert(pontos3(0)),
     rodadas(1).
     
 cadastraJogadores("3"):-
@@ -112,11 +112,11 @@ cadastraJogadores("3"):-
     writeln("Jogador 03, digite seu nome: "),
     lerString(Nome03),
     assert(nome01(Nome01)),
-    assert(pontos01(0)), 
+    assert(pontos1(0)), 
     assert(nome02(Nome02)),
-    assert(pontos02(0)), 
+    assert(pontos2(0)), 
     assert(nome03(Nome03)),
-    assert(pontos03(0)),
+    assert(pontos3(0)),
     rodadas(1).
 
 cadastraJogadores(_) :-
@@ -137,8 +137,10 @@ rodadas(NumeroRodada) :-
         jogadas(1, NumeroRodada, PalavraCoberta, Palavra, Dica),
         write(">> Rodada N°: "), writeln(NumeroRodada),
         menus: pontuacaoGeral,
+        retract(pontosT01(_)), retract(pontosT02(_)), retract(pontosT03(_)),
+        retract(letras(_)),
         nome01(Nome01), nome02(Nome02), nome03(Nome03),
-        pontos01(P1), pontos02(P2), pontos03(P3),
+        pontos1(P1), pontos2(P2), pontos3(P3),
         write("Pontuação do jogador(a) "), write(Nome01), write(": "), writeln(P1),
         write("Pontuação do jogador(a) "), write(Nome02), write(": "), writeln(P2),
         write("Pontuação do jogador(a) "), write(Nome03), write(": "), writeln(P3), 
@@ -224,9 +226,9 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
                 ))).
 
 alterarPontuacaoPermanente(V) :-
-    V =:= 1, retract(pontos01(_)), assert(pontos01(10)),
-    V =:= 2, retract(pontos02(_)), assert(pontos02(20)),
-    V =:= 3, retract(pontos03(_)), assert(pontos03(30)).
+    V =:= 1, retract(pontos1(_)), assert(pontos1(10)),
+    V =:= 2, retract(pontos2(_)), assert(pontos2(20)),
+    V =:= 3, retract(pontos3(_)), assert(pontos3(30)).
 
 atualizarLetras(Letras, L) :-
     string_concat(Letras, L, N0), string_concat(N0, " ", N1),
