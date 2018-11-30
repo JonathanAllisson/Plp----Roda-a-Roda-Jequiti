@@ -34,7 +34,7 @@ itemPorIndice(I, N, [H|T], E) :-
 
 lista(X) :- X = [50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000,"Perdeu tudo","Perdeu tudo","Passou a vez","Passou a vez","Passou a vez"].
 
-letras_bot(Y) :- Y["A","E","I","O","U"].
+letras_bot(Y) :- Y=["A","E","I","O","U"].
 
 roleta(Y):-
     lista(X),
@@ -137,7 +137,7 @@ rodadas(NumeroRodada) :-
         jogadas(1, NumeroRodada, PalavraCoberta, Palavra, Dica),
         write(">> Rodada N°: "), writeln(NumeroRodada),
         menus: pontuacaoGeral,
-        retract(pontosT01(_)), retract(pontosT02(_)), retract(pontosT03(_)),
+        %%retract(pontosT01(_)), retract(pontosT02(_)), retract(pontosT03(_)),
         retract(letras(_)),
         nome01(Nome01), nome02(Nome02), nome03(Nome03),
         pontos1(P1), pontos2(P2), pontos3(P3),
@@ -191,7 +191,6 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
                 write("Parabens, você acertou a palavra e ganhou "), write(Pon), writeln(" pontos"),
                 sleep(2),
                 alterarPontuacao(Vez, Pon),
-                alterarPontuacaoPermanente(Vez),
                 writeln("CHECKJ"),
                 sleep(2);
                 UPalavraT \= Palavra,
@@ -222,13 +221,16 @@ jogadas(Vez, NumeroRodada, PalavraCoberta, Palavra, Dica) :-
                     write(" letras e ganhou "), write(NP), writeln(" pontos."),
                     sleep(2),
                     jogadas(Vez, NumeroRodada, NPalavraCoberta, Palavra, Dica)
-                    )
-                ))).
+                )
+                   
+            )   
+        )
+      
+    ).
 
 alterarPontuacaoPermanente(V) :-
-    V =:= 1, retract(pontos1(_)), assert(pontos1(10)),
-    V =:= 2, retract(pontos2(_)), assert(pontos2(20)),
-    V =:= 3, retract(pontos3(_)), assert(pontos3(30)).
+  writeln("segue o jogo").
+  
 
 atualizarLetras(Letras, L) :-
     string_concat(Letras, L, N0), string_concat(N0, " ", N1),
@@ -252,7 +254,6 @@ lerString(X) :-
 
 cobre(' ', " ").
 cobre(_, "#").
-
 cobrirPalavra([], []).
 cobrirPalavra([H|T], [R|T2]):-
     cobre(H, R), cobrirPalavra(T, T2).
@@ -284,10 +285,63 @@ alterarPontuacao(Vez, N) :-
     Vez =:= 3, retract(pontosT03(P3)), K3 is (P3 + N), assert(pontosT03(K3)).
 
 rodadaFinal :-
-    writeln("H89SH89ASHAS").
-
+    writeln("1dasasddas"),
+    sleep(5),
+    assert(letras("")),
+    tema(Tem), letras(Letras),
+    writeln("2dasasddas"),
+    palavraDica(Palavra, Dica),
+    writeln("3dasasddas"),
+    string_chars(Palavra, Chars),
+    writeln("4dasasddas"),
+    cobrirPalavra(Chars, Res),
+    writeln("5dasasddas"),
+    atomic_list_concat(Res, PalavraCoberta),
+   
+    menus: limpaTela,
+    writeln(">> Rodada Final:"),
+    writeln("*************************************************************************"),
+    writeln("aki vc concorre a 1 milhao, digite 1 vogal e 4 consoantes"),
+    writeln("*************************************************************************"),
+    write("Tema: "), writeln(Tem),
+    write("Dica: "), writeln(Dica),
+    write("Palavra: "), write(Palavra), write(" // "), writeln(PalavraCoberta),
+    write("Letra(s) já escolhida(s): "), writeln(Letras),
+    sleep(3),
+    menus: limpaTela,
+    write("Tema: "), writeln(Tem),
+    write("Dica: "), writeln(Dica),
+    write("Palavra: "), write(Palavra), write(" // "), writeln(PalavraCoberta),
+    write("Letra(s) já escolhida(s): "), writeln(Letras),
+    writeln("digite uma vogal"),
+    lerString(Tentativa),
+    menus: limpaTela,
+    write("Tema: "), writeln(Tem),
+    write("Dica: "), writeln(Dica),
+    write("Palavra: "), write(Palavra), write(" // "), writeln(PalavraCoberta),
+    write("Letra(s) já escolhida(s): "), writeln(Letras),
+    writeln("digite uma consoante"),
+    lerString(Tentativa),
+    write("Tema: "), writeln(Tem),
+    write("Dica: "), writeln(Dica),
+    write("Palavra: "), write(Palavra), write(" // "), writeln(PalavraCoberta),
+    write("Letra(s) já escolhida(s): "), writeln(Letras),
+    writeln("digite uma consoante"),
+    lerString(Tentativa),
+    write("Tema: "), writeln(Tem),
+    write("Dica: "), writeln(Dica),
+    write("Palavra: "), write(Palavra), write(" // "), writeln(PalavraCoberta),
+    write("Letra(s) já escolhida(s): "), writeln(Letras),
+    writeln("digite uma consoante"),
+    lerString(Tentativa),
+    write("Tema: "), writeln(Tem),
+    write("Dica: "), writeln(Dica),
+    write("Palavra: "), write(Palavra), write(" // "), writeln(PalavraCoberta),
+    write("Letra(s) já escolhida(s): "), writeln(Letras),
+    writeln("digite uma consoante"),
+    lerString(Tentativa).
 main :-
     menus: limpaTela,
     menus:telaInicial,
     caso1,
-    halt(0).
+halt(0).
