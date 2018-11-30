@@ -2,9 +2,22 @@
 :- use_module(menus).
 :- dynamic tema/1, qtdRodadas/1, qtdJogadores/1, nome01/1, pontos01/1, nome02/1, pontos02/1, nome03/1, pontos03/1, pontosT01/1, pontosT02/1, pontosT03/1.
 
-arquivo(Lines) :-
-    open('Palavras.txt', read, Str),
+arquivo_Geografia(Lines) :-
+    open('geografia.txt', read, Str),
     read_file(Str,Lines),
+    writeln(Lines),
+    close(Str).
+
+arquivo_Marcas(Lines) :-
+    open('marcas.txt', read, Str),
+    read_file(Str,Lines),
+    writeln(Lines),
+    close(Str).
+
+arquivo_Filmes(Lines) :-
+    open('filmes.txt', read, Str),
+    read_file(Str,Lines),
+    writeln(Lines),
     close(Str).
 
 read_file(Stream,[]) :-
@@ -14,11 +27,15 @@ read_file(Stream,[X|L]) :-
     \+ at_end_of_stream(Stream),
     read(Stream,X),
     read_file(Stream,L).
-
+ 
 palavraDica(Palavra, Dica) :-
-    arquivo(L),
-    random(0, 60, R),
-    K is (R + 60),
+    tema(T) -> ( 
+        T == "Geografia", arquivo_Geografia(L);
+        T == "Marcas", arquivo_Marcas(L);
+        T == "Filmes", arquivo_Filmes(L);
+        ),
+    random(0, 20, R),
+    K is (R + 20),
     itemPorIndice(0, R, L, Palavra),
     itemPorIndice(0, K, L, Dica).
 
@@ -48,7 +65,7 @@ caso2 :-
     menus:escolherTema,
     lerString(Tema)->(
         Tema \= "1", Tema \= "2", Tema \= "3", menus: limpaTela, menus: opcaoInvalida, caso2;
-        true -> (Tema == "1", T = "Geografia"; Tema == "2", T = "Marcas"; Tema == "3", T = "Filmees"),
+        true -> (Tema == "1", T = "Geografia"; Tema == "2", T = "Marcas"; Tema == "3", T = "Filmes"),
         assert(tema(T)), caso3
         ).
     
